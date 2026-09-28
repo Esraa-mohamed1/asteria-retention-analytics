@@ -1,0 +1,10 @@
+quality_flag,severity,row_count,pct_of_rows,treatment
+unknown_country_code,excluded_from_analysis,9,0.37,Country code blank or not one of the six operating countries; excluded.
+missing_hire_date,excluded_from_analysis,5,0.21,hire_date blank; cannot place the person in any cohort; excluded.
+unparseable_hire_date,excluded_from_analysis,0,0.0,hire_date present but not a valid date; excluded.
+unparseable_termination_date,excluded_from_analysis,0,0.0,termination_date present but not a valid date; excluded.
+termination_before_hire,excluded_from_analysis,5,0.21,termination_date earlier than hire_date (impossible); excluded.
+duplicate_employee_id,excluded_from_analysis,7,0.29,"Repeat of an employee_id already seen; first occurrence kept, repeat excluded."
+termination_missing_type,informational,13,0.54,Exit recorded without a termination_type; kept (retention only needs the date).
+nonstandard_career_level_kept_separate,informational,10,0.42,"'Sr Mgmt' style label kept as its own category, not merged, not counted as senior."
+voluntary_exit_missing_regret_flag,informational,2,0.08,"Voluntary exit with blank regretted_exit; kept, counted as not regretted."

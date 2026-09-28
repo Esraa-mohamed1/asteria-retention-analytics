@@ -1,0 +1,10 @@
+{
+  "provider": "eurostat",
+  "indicator_id": "unemployment_rate",
+  "url": "SYNTHETIC/unemployment_rate",
+  "params": {},
+  "retrieved_at": "2026-01-15T08:00:00Z",
+  "sha256": "0c0763cf4b979d174ba4a3477e80966f857d0caf2ad4d3faad92b99bf1973647",
+  "origin": "fixture_synthetic",
+  "label": "SYNTHETIC DATA \u2014 for offline testing only. Values are random and do NOT represent real statistics."
+}

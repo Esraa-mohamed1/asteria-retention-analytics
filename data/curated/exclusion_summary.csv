@@ -1,0 +1,4 @@
+objective_id,total_rows,excluded_unclean,excluded_out_of_scope,excluded_before_effective_window,in_cohort
+NEW_HIRE_6M,2407,26,0,412,1969
+SENIOR_HIRE_12M,2407,26,2015,59,307
+REGRETTED_TURNOVER_12M,2407,26,0,0,2381

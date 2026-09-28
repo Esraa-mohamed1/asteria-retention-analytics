@@ -1,0 +1,10 @@
+{
+  "provider": "eurostat",
+  "indicator_id": "job_vacancy_rate",
+  "url": "SYNTHETIC/job_vacancy_rate",
+  "params": {},
+  "retrieved_at": "2026-01-15T08:00:00Z",
+  "sha256": "c1ad8db40fe7b981769827ae7ca287f6372460f3428b4f58447cecb901c37cc4",
+  "origin": "fixture_synthetic",
+  "label": "SYNTHETIC DATA \u2014 for offline testing only. Values are random and do NOT represent real statistics."
+}

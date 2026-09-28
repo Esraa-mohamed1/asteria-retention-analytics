@@ -1,0 +1,10 @@
+{
+  "provider": "worldbank",
+  "indicator_id": "labour_force_participation",
+  "url": "SYNTHETIC/labour_force_participation",
+  "params": {},
+  "retrieved_at": "2026-01-15T08:00:00Z",
+  "sha256": "32cc59306cad072337ad900b6f777e1441ad22a2bdd68c7eb0c2e73ba84fde46",
+  "origin": "fixture_synthetic",
+  "label": "SYNTHETIC DATA \u2014 for offline testing only. Values are random and do NOT represent real statistics."
+}

@@ -1,0 +1,10 @@
+{
+  "provider": "worldbank",
+  "indicator_id": "gdp_growth",
+  "url": "SYNTHETIC/gdp_growth",
+  "params": {},
+  "retrieved_at": "2026-01-15T08:00:00Z",
+  "sha256": "f8f4d38efb10ada2ba668ba394850ba3e7fedbef66f311b65ccde69254fe4b2e",
+  "origin": "fixture_synthetic",
+  "label": "SYNTHETIC DATA \u2014 for offline testing only. Values are random and do NOT represent real statistics."
+}

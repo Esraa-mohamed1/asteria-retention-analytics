@@ -1,0 +1,159 @@
+{
+  "run_timestamp": "2026-09-28T13:23:54Z",
+  "source_mode": "fixtures",
+  "total_duration_s": 2.32,
+  "exit_code": 0,
+  "stages": [
+    {
+      "stage": "manifest_verify",
+      "status": "ok",
+      "duration_s": 0.002,
+      "rows": null,
+      "detail": ""
+    },
+    {
+      "stage": "ingest_external",
+      "status": "ok",
+      "duration_s": 0.047,
+      "rows": 1228,
+      "detail": "source=fixtures, failed=[]"
+    },
+    {
+      "stage": "curate_external",
+      "status": "ok",
+      "duration_s": 0.086,
+      "rows": 1228,
+      "detail": ""
+    },
+    {
+      "stage": "curate_workforce",
+      "status": "ok",
+      "duration_s": 0.041,
+      "rows": 2407,
+      "detail": ""
+    },
+    {
+      "stage": "compute_metrics",
+      "status": "ok",
+      "duration_s": 0.218,
+      "rows": 1710,
+      "detail": ""
+    },
+    {
+      "stage": "analysis_panel_association",
+      "status": "ok",
+      "duration_s": 1.439,
+      "rows": 687,
+      "detail": ""
+    },
+    {
+      "stage": "sql_cross_check",
+      "status": "ok",
+      "duration_s": 0.301,
+      "rows": null,
+      "detail": "{'NEW_HIRE_6M': 'PASS', 'SENIOR_HIRE_12M': 'PASS', 'REGRETTED_TURNOVER_12M': 'PASS'}"
+    },
+    {
+      "stage": "write_curated_csvs",
+      "status": "ok",
+      "duration_s": 0.046,
+      "rows": null,
+      "detail": ""
+    },
+    {
+      "stage": "build_dashboard",
+      "status": "ok",
+      "duration_s": 0.139,
+      "rows": null,
+      "detail": ""
+    }
+  ],
+  "ingestion_outcomes": [
+    {
+      "indicator_id": "unemployment_rate",
+      "provider": "eurostat",
+      "status": "ok",
+      "origin": "fixture_synthetic",
+      "n_observations": 498,
+      "retrieved_at": "2026-01-15T08:00:00Z",
+      "snapshot_age_days": 256,
+      "error": "",
+      "note": ""
+    },
+    {
+      "indicator_id": "job_vacancy_rate",
+      "provider": "eurostat",
+      "status": "ok",
+      "origin": "fixture_synthetic",
+      "n_observations": 162,
+      "retrieved_at": "2026-01-15T08:00:00Z",
+      "snapshot_age_days": 256,
+      "error": "",
+      "note": ""
+    },
+    {
+      "indicator_id": "hicp_inflation",
+      "provider": "eurostat",
+      "status": "ok",
+      "origin": "fixture_synthetic",
+      "n_observations": 498,
+      "retrieved_at": "2026-01-15T08:00:00Z",
+      "snapshot_age_days": 256,
+      "error": "",
+      "note": ""
+    },
+    {
+      "indicator_id": "gdp_growth",
+      "provider": "worldbank",
+      "status": "ok",
+      "origin": "fixture_synthetic",
+      "n_observations": 34,
+      "retrieved_at": "2026-01-15T08:00:00Z",
+      "snapshot_age_days": 256,
+      "error": "",
+      "note": ""
+    },
+    {
+      "indicator_id": "labour_force_participation",
+      "provider": "worldbank",
+      "status": "ok",
+      "origin": "fixture_synthetic",
+      "n_observations": 36,
+      "retrieved_at": "2026-01-15T08:00:00Z",
+      "snapshot_age_days": 256,
+      "error": "",
+      "note": ""
+    }
+  ],
+  "cross_check": {
+    "NEW_HIRE_6M": {
+      "status": "PASS",
+      "sql_numerator": 1575.0,
+      "sql_denominator": 1808.0,
+      "pandas_numerator": 1575.0,
+      "pandas_denominator": 1808.0,
+      "diff_numerator": 0.0,
+      "diff_denominator": 0.0
+    },
+    "SENIOR_HIRE_12M": {
+      "status": "PASS",
+      "sql_numerator": 202.0,
+      "sql_denominator": 259.0,
+      "pandas_numerator": 202.0,
+      "pandas_denominator": 259.0,
+      "diff_numerator": 0.0,
+      "diff_denominator": 0.0
+    },
+    "REGRETTED_TURNOVER_12M": {
+      "status": "PASS",
+      "sql_numerator": 23.0,
+      "sql_denominator": 535.0,
+      "pandas_numerator": 23.0,
+      "pandas_denominator": 535.0,
+      "diff_numerator": 0.0,
+      "diff_denominator": 0.0,
+      "note": "spot-check on first evaluation date (2021-12-31 window)"
+    }
+  },
+  "notes": []
+}

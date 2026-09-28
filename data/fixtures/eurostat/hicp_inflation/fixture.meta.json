@@ -1,0 +1,10 @@
+{
+  "provider": "eurostat",
+  "indicator_id": "hicp_inflation",
+  "url": "SYNTHETIC/hicp_inflation",
+  "params": {},
+  "retrieved_at": "2026-01-15T08:00:00Z",
+  "sha256": "02e76947d762bba708a53f7c05d6db4b521640b7391f3b3bc8e1254983dc8643",
+  "origin": "fixture_synthetic",
+  "label": "SYNTHETIC DATA \u2014 for offline testing only. Values are random and do NOT represent real statistics."
+}
