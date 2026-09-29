@@ -50,3 +50,6 @@ coverage.xml
 .DS_Store
 Thumbs.db
 *.log
+
+# Private notes — not for submission
+presentation/code_explained.md

@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Asteria Retention — Interview Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #060d18;
+  --surface:   #0d1a2b;
+  --surface2:  #112034;
+  --line:      rgba(255,255,255,.09);
+  --text:      #f0f6ff;
+  --text2:     #94a3b8;
+  --teal:      #2dd4bf;
+  --teal-dim:  rgba(45,212,191,.15);
+  --coral:     #ff6b5b;
+  --coral-dim: rgba(255,107,91,.15);
+  --amber:     #fbbf24;
+  --purple:    #a78bfa;
+  --blue:      #60a5fa;
+}
+
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  user-select: none;
+}
+
+/* ── deck container ── */
+#deck {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── slides ── */
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 5vw 6vw;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(60px);
+  transition: opacity .45s ease, transform .45s ease;
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(0);
+}
+.slide.out {
+  opacity: 0;
+  transform: translateX(-60px);
+  transition: opacity .3s ease, transform .3s ease;
+}
+
+/* ── slide types ── */
+.slide-cover { align-items: center; text-align: center; }
+.slide-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(45,212,191,.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 80%, rgba(167,139,250,.1) 0%, transparent 60%);
+  z-index: 0;
+}
+.slide-cover > * { position: relative; z-index: 1; }
+
+/* ── typography ── */
+.slide-num {
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 1.2rem;
+  opacity: .8;
+}
+.part-label {
+  display: inline-block;
+  background: var(--teal-dim);
+  color: var(--teal);
+  border: 1px solid rgba(45,212,191,.3);
+  border-radius: 6px;
+  padding: .25rem .75rem;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.part-label.coral { background: var(--coral-dim); color: var(--coral); border-color: rgba(255,107,91,.3); }
+.part-label.amber { background: rgba(251,191,36,.1); color: var(--amber); border-color: rgba(251,191,36,.3); }
+.part-label.purple { background: rgba(167,139,250,.1); color: var(--purple); border-color: rgba(167,139,250,.3); }
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -.03em;
+  margin-bottom: 1rem;
+}
+h1 .accent { color: var(--teal); }
+h2 {
+  font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  margin-bottom: 1.2rem;
+}
+.sub {
+  font-size: clamp(.95rem, 2vw, 1.2rem);
+  color: var(--text2);
+  font-weight: 500;
+  line-height: 1.6;
+  max-width: 72ch;
+}
+.meta-line {
+  margin-top: 1.8rem;
+  font-size: .8rem;
+  color: var(--text2);
+  font-weight: 500;
+  letter-spacing: .04em;
+}
+
+/* ── grid layouts ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.8rem;
+  width: 100%;
+  margin-top: 1.2rem;
+}
+.three-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.2rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+.four-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* ── cards ── */
+.card {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.2rem 1.4rem;
+}
+.card-label { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--text2); margin-bottom: .5rem; }
+.card-value { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 900; letter-spacing: -.03em; }
+.card-sub { font-size: .8rem; color: var(--text2); margin-top: .3rem; font-weight: 500; }
+.card.teal-border { border-color: rgba(45,212,191,.35); }
+.card.coral-border { border-color: rgba(255,107,91,.4); }
+.card.amber-border { border-color: rgba(251,191,36,.35); }
+.card.green-border { border-color: rgba(74,222,128,.35); }
+
+/* ── stat highlight ── */
+.big-stat { font-size: clamp(3rem, 7vw, 6rem); font-weight: 900; letter-spacing: -.04em; line-height: 1; }
+.big-stat.teal { color: var(--teal); }
+.big-stat.coral { color: var(--coral); }
+.big-stat.amber { color: var(--amber); }
+
+/* ── table ── */
+.slide-table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: clamp(.75rem, 1.4vw, .9rem); }
+.slide-table th {
+  text-align: left;
+  padding: .6rem .9rem;
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--text2);
+  border-bottom: 1px solid var(--line);
+}
+.slide-table td {
+  padding: .65rem .9rem;
+  color: var(--text);
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.slide-table tr:last-child td { border-bottom: none; }
+.slide-table .hit { color: #4ade80; font-weight: 700; }
+.slide-table .miss { color: var(--coral); font-weight: 700; }
+.slide-table code {
+  background: rgba(255,255,255,.1);
+  border-radius: 4px;
+  padding: .1em .35em;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: .88em;
+  color: var(--teal);
+}
+
+/* ── list ── */
+.bullet-list { list-style: none; margin-top: 1rem; display: flex; flex-direction: column; gap: .7rem; }
+.bullet-list li { display: flex; gap: .75rem; align-items: flex-start; font-size: clamp(.85rem, 1.5vw, 1rem); line-height: 1.55; color: var(--text2); }
+.bullet-list li::before { content: '▸'; color: var(--teal); flex-shrink: 0; margin-top: .05rem; font-size: .9em; }
+.bullet-list li strong { color: var(--text); font-weight: 700; }
+.bullet-list li .badge {
+  display: inline-block;
+  border-radius: 4px;
+  padding: .1em .4em;
+  font-size: .78em;
+  font-weight: 700;
+}
+.badge-teal { background: var(--teal-dim); color: var(--teal); }
+.badge-coral { background: var(--coral-dim); color: var(--coral); }
+.badge-amber { background: rgba(251,191,36,.12); color: var(--amber); }
+
+/* ── code block ── */
+.code-block {
+  background: rgba(0,0,0,.4);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1rem 1.3rem;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: clamp(.72rem, 1.3vw, .9rem);
+  color: #e2e8f0;
+  line-height: 1.7;
+  white-space: pre;
+  overflow: auto;
+  margin-top: .8rem;
+}
+.code-block .c-teal { color: var(--teal); }
+.code-block .c-amber { color: var(--amber); }
+.code-block .c-purple { color: var(--purple); }
+.code-block .c-coral { color: var(--coral); }
+.code-block .c-dim { color: #64748b; }
+
+/* ── finding cards ── */
+.finding { border-radius: 12px; padding: 1rem 1.2rem; border-left: 3px solid; }
+.finding.hit  { background: rgba(74,222,128,.07); border-color: #4ade80; }
+.finding.miss { background: var(--coral-dim); border-color: var(--coral); }
+.finding.info { background: rgba(96,165,250,.07); border-color: var(--blue); }
+.finding.non  { background: rgba(251,191,36,.07); border-color: var(--amber); }
+.finding-title { font-size: .88rem; font-weight: 800; color: var(--text); margin-bottom: .3rem; }
+.finding-body  { font-size: .8rem; color: var(--text2); line-height: 1.55; }
+
+/* ── diagram boxes ── */
+.pipeline {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.pipe-box {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: .6rem 1rem;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+}
+.pipe-box.active-box { border-color: rgba(45,212,191,.4); color: var(--teal); background: var(--teal-dim); }
+.pipe-arrow { color: var(--text2); font-size: 1.1rem; font-weight: 300; }
+
+/* ── nav ── */
+#nav {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(13,26,43,.85);
+  border: 1px solid var(--line);
+  border-radius: 50px;
+  padding: .6rem 1.4rem;
+  backdrop-filter: blur(10px);
+  z-index: 100;
+}
+#nav button {
+  background: none;
+  border: none;
+  color: var(--text2);
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: .1rem .4rem;
+  border-radius: 6px;
+  transition: color .2s, background .2s;
+}
+#nav button:hover { color: var(--text); background: rgba(255,255,255,.08); }
+#slide-counter {
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--text2);
+  min-width: 5ch;
+  text-align: center;
+}
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--teal), var(--purple));
+  transition: width .4s ease;
+  z-index: 200;
+}
+
+/* ── part divider ── */
+.part-divider {
+  background: var(--surface);
+  border-left: 4px solid var(--teal);
+  border-radius: 0 12px 12px 0;
+  padding: .5rem 1.2rem;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 1.2rem;
+  display: inline-block;
+}
+.part-divider.coral { border-color: var(--coral); color: var(--coral); }
+.part-divider.amber { border-color: var(--amber); color: var(--amber); }
+.part-divider.purple { border-color: var(--purple); color: var(--purple); }
+
+/* ── separator ── */
+hr.slide-hr { border: none; border-top: 1px solid var(--line); margin: 1rem 0; }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div id="deck"></div>
+
+<nav id="nav" aria-label="Slide navigation">
+  <button id="btn-prev" aria-label="Previous slide">◀</button>
+  <span id="slide-counter">1 / 1</span>
+  <button id="btn-next" aria-label="Next slide">▶</button>
+</nav>
+
+<script>
+const SLIDES = [
+
+// ── 00 Cover ──────────────────────────────────────────────────────────────────
+{type:'cover', html:`
+<div class="slide-num">Asteria Consumer Products (fictional) · Software Engineer (Web) — Analytics & Insights</div>
+<h1><span class="accent">External signals</span><br>× Workforce Retention</h1>
+<p class="sub">A reproducible data product: five indicators · two providers · three objectives · six European markets</p>
+<p class="meta-line">Software-emphasis track &nbsp;·&nbsp; 15-minute presentation &nbsp;·&nbsp; <strong style="color:var(--teal)">Esraa Mohamed</strong></p>
+`},
+
+// ── 01 The Question ───────────────────────────────────────────────────────────
+{html:`
+<div class="part-divider">Part 1 · Problem refinement · 3 min</div>
+<h2>The question leaders asked</h2>
+<p class="sub" style="margin-bottom:1.2rem">Can public labour-market and macroeconomic signals add useful context to our three retention objectives across six European markets?</p>
+<div class="three-col">
+  <div class="card teal-border">
+    <div class="card-label">Objective 1</div>
+    <div style="font-size:1.05rem;font-weight:800;color:var(--teal)">New-hire 6M retention</div>
+    <div class="card-sub">Target ≥ 86%</div>
+  </div>
+  <div class="card coral-border">
+    <div class="card-label">Objective 2</div>
+    <div style="font-size:1.05rem;font-weight:800;color:var(--coral)">Senior-hire 12M retention</div>
+    <div class="card-sub">Target ≥ 90%</div>
+  </div>
+  <div class="card teal-border">
+    <div class="card-label">Objective 3</div>
+    <div style="font-size:1.05rem;font-weight:800;color:var(--teal)">Regretted turnover 12M</div>
+    <div class="card-sub">Target ≤ 8%</div>
+  </div>
+</div>
+<ul class="bullet-list" style="margin-top:1.2rem">
+  <li><strong>Deliverable:</strong> a reproducible data pipeline + an interactive dashboard</li>
+  <li><strong>Track:</strong> software emphasis — depth over breadth; tradeoffs documented</li>
+  <li><strong>Scope principle:</strong> one coherent vertical slice, runnable end-to-end, with everything left out stated explicitly</li>
+</ul>
+`},
+
+// ── 02 Narrowing decisions ─────────────────────────────────────────────────────
+{html:`
+<div class="part-divider">Part 1 · Problem refinement</div>
+<h2>How I narrowed the brief</h2>
+<p class="sub" style="margin-bottom:.8rem">Every ambiguity below was written down <em>before</em> any code was written, with the consequence of each choice.</p>
+<table class="slide-table">
+  <thead><tr><th>Ambiguity</th><th>My decision</th><th>Consequence</th></tr></thead>
+  <tbody>
+    <tr><td>Who is a "senior hire"?</td><td><code>career_level == "Senior Leader"</code> only</td><td>Manager and Sr Mgmt excluded; documented risk ≤10 rows</td></tr>
+    <tr><td>"Sr Mgmt" (10 rows)</td><td>Kept as own category, flagged, not merged</td><td>Could understate denominator by 0.4% — stated openly</td></tr>
+    <tr><td>Immature cohorts (hired &lt; N months ago)</td><td>Excluded from denominator, not counted as failure</td><td>Appear in <code>immature</code> count on every metric result</td></tr>
+    <tr><td>Turnover denominator</td><td>Average headcount: (start + end) ÷ 2</td><td>Standard auditable proxy; off if headcount is non-linear</td></tr>
+    <tr><td>Blank <code>regretted_exit</code></td><td>Not counted as regretted; reported as "unknown_regret"</td><td>Never inflates or deflates rate silently</td></tr>
+    <tr><td>Dirty rows (unknown country, duplicates)</td><td>Flagged, never deleted</td><td>Visible in quality report; exclusions always auditable</td></tr>
+    <tr><td>Frequency mixing (monthly vs quarterly)</td><td>Monthly → quarterly mean; never forward-filled</td><td>Prevents one quarterly reading appearing as 3 monthly ones</td></tr>
+  </tbody>
+</table>
+`},
+
+// ── 03 Scope cuts ──────────────────────────────────────────────────────────────
+{html:`
+<div class="part-divider">Part 1 · Problem refinement</div>
+<h2>Deliberate scope cuts</h2>
+<p class="sub">A deliberate cut with a written reason is stronger evidence than an unfinished broad solution.</p>
+<div class="two-col" style="margin-top:1.2rem">
+  <div class="card">
+    <div class="card-label" style="color:var(--coral)">❌ Not built</div>
+    <ul class="bullet-list" style="margin-top:.5rem">
+      <li><strong>Attrition prediction model</strong> — brief asks for association, not prediction; small synthetic data is a poor basis for a model presented as decision-ready</li>
+      <li><strong>Power BI .pbix deliverable</strong> — HTML dashboard chosen; versionable, testable with the same toolchain, no proprietary app needed for review</li>
+      <li><strong>Live API in CI tests</strong> — tests use checked-in replay fixtures; deterministic and network-independent</li>
+    </ul>
+  </div>
+  <div class="card teal-border">
+    <div class="card-label" style="color:var(--teal)">✅ One command, end-to-end</div>
+    <div class="code-block" style="margin-top:.5rem"><span class="c-dim"># Install once</span>
+pip install -e ".[dev]"
+
+<span class="c-dim"># Run everything</span>
+python -m asteria_retention run \
+  --source fixtures
+
+<span class="c-dim"># Then open in browser</span>
+dashboard/index.html</div>
+  </div>
+</div>
+`},
+
+// ── 04 Pipeline overview ───────────────────────────────────────────────────────
+{html:`
+<div class="part-divider coral">Part 2 · Architecture, lineage, reliability · 5 min</div>
+<h2>Pipeline stages</h2>
+<div class="pipeline">
+  <div class="pipe-box active-box">Research</div><div class="pipe-arrow">→</div>
+  <div class="pipe-box active-box">Ingest</div><div class="pipe-arrow">→</div>
+  <div class="pipe-box active-box">Curate</div><div class="pipe-arrow">→</div>
+  <div class="pipe-box active-box">Analyse</div><div class="pipe-arrow">→</div>
+  <div class="pipe-box active-box">Explain</div>
+</div>
+<div class="two-col" style="margin-top:1.2rem">
+  <div>
+    <div class="code-block"><span class="c-dim">## Data sources</span>
+data/raw/                 <span class="c-dim"># HR CSV (SHA-256 verified)</span>
+data/external_raw/        <span class="c-dim"># live API snapshots</span>
+data/fixtures/            <span class="c-dim"># offline replay (no network)</span>
+
+<span class="c-dim">## Providers</span>
+<span class="c-teal">Eurostat</span>  →  3 indicators (M, Q)
+<span class="c-amber">World Bank</span> →  2 indicators (A)</div>
+  </div>
+  <div>
+    <ul class="bullet-list">
+      <li><strong>5 indicators</strong> across 2 providers — 4 lenses: labour supply · demand · cost-of-living · economic cycle</li>
+      <li><strong>6 countries</strong>: BG, GR, IE, IT, PL, RO</li>
+      <li><strong>3 objectives</strong>: cohort retention (×2) + workforce turnover</li>
+      <li><strong>~3 years</strong> of history in fixtures; full history on live run</li>
+    </ul>
+  </div>
+</div>
+`},
+
+// ── 05 Adapter boundary ────────────────────────────────────────────────────────
+{html:`
+<div class="part-divider coral">Part 2 · Architecture</div>
+<h2>Adapter boundary — the key software decision</h2>
+<p class="sub">Only one module per provider knows that provider's API. Adding a third provider = one new file.</p>
+<div class="two-col" style="margin-top:1rem">
+  <div class="code-block"><span class="c-dim">## Module responsibility</span>
+
+<span class="c-teal">eurostat_client.py</span>
+  - API URL pattern
+  - "EL" → "GR" geo translation
+  - dataset codes (une_rt_m, etc.)
+  - prefer{} fallback for schema changes
+
+<span class="c-amber">worldbank_client.py</span>
+  - ISO-3 country codes (GRC, ROU…)
+  - WB URL format & pagination
+  - annual value parsing
+
+<span class="c-purple">ingestion/service.py</span>
+  - dispatcher: reads provider from config
+  - picks the right client
+  - isolates failures per indicator</div>
+  <div>
+    <div class="card" style="margin-bottom:1rem">
+      <div class="card-label">Greece geo alias — handled once</div>
+      <div class="code-block" style="margin-top:.4rem">COUNTRIES = {
+  <span class="c-teal">"GR"</span>: Country(
+    iso2=<span class="c-teal">"GR"</span>, eurostat_geo=<span class="c-amber">"EL"</span>
+  ),
+  ...
+}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Domain layer never sees provider names</div>
+      <div style="font-size:.82rem;color:var(--text2);margin-top:.4rem">
+        <code>retention_metrics.py</code>, <code>temporal_alignment.py</code>, and
+        the dashboard <strong>have no import of any ingestion module</strong>.
+        The boundary is enforced by the package structure.
+      </div>
+    </div>
+  </div>
+</div>
+`},
+
+// ── 06 Reliability ─────────────────────────────────────────────────────────────
+{html:`
+<div class="part-divider coral">Part 2 · Architecture</div>
+<h2>Reliability choices</h2>
+<div class="two-col" style="margin-top:1rem">
+  <table class="slide-table">
+    <thead><tr><th>Concern</th><th>Implementation</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Network failure</strong></td><td>Retries with exponential backoff; failed indicator logs a warning and continues — does not abort the run</td></tr>
+      <tr><td><strong>Offline review</strong></td><td>Bundled replay fixtures for all 5 indicators; <code>--source fixtures</code> = fully deterministic, no network</td></tr>
+      <tr><td><strong>Future data leakage</strong></td><td>Every observation carries <code>available_from = period_end + lag_days</code>; as-of join only uses values where <code>available_from ≤ eval_date</code></td></tr>
+      <tr><td><strong>Frequency integrity</strong></td><td>Monthly values never forward-filled into fake monthly rows; each observation keeps its native period label</td></tr>
+      <tr><td><strong>Stale values</strong></td><td>Each indicator has <code>max_age_days</code>; too-old observations excluded from the association panel</td></tr>
+      <tr><td><strong>API schema change</strong></td><td><code>prefer{}</code> fallback in config accepts both old and new Eurostat dimension codes</td></tr>
+    </tbody>
+  </table>
+  <div>
+    <div class="code-block"><span class="c-dim"># anti-leakage assertion (temporal_alignment.py)</span>
+def assert_no_future_information(joined):
+    bad = joined[
+        joined[<span class="c-teal">"ind_available_from"</span>]
+        > joined[<span class="c-teal">"eval_date"</span>]
+    ]
+    if not bad.empty:
+        raise ContractViolation(<span class="c-amber">
+          f"Future info in {len(bad)} rows"</span>
+        )</div>
+    <div style="margin-top:.8rem;font-size:.8rem;color:var(--text2)">
+      This assertion runs on every pipeline run. It cannot be skipped.
+      If it fails, the run aborts with a clear error.
+    </div>
+  </div>
+</div>
+`},
+
+// ── 07 Quality ────────────────────────────────────────────────────────────────
+{html:`
+<div class="part-divider coral">Part 2 · Architecture</div>
+<h2>Quality and lineage — 0 rows deleted</h2>
+<div class="two-col" style="margin-top:1rem">
+  <div>
+    <p class="sub" style="font-size:.9rem;margin-bottom:.8rem">Every problem is flagged and kept. The <code>is_clean_for_analysis</code> boolean is the single gate used by all three objectives.</p>
+    <table class="slide-table">
+      <thead><tr><th>Flag</th><th>Severity</th></tr></thead>
+      <tbody>
+        <tr><td><code>unknown_country_code</code></td><td style="color:var(--coral)">Blocking</td></tr>
+        <tr><td><code>duplicate_employee_id</code></td><td style="color:var(--coral)">Blocking</td></tr>
+        <tr><td><code>missing_hire_date</code></td><td style="color:var(--coral)">Blocking</td></tr>
+        <tr><td><code>nonstandard_career_level_kept_separate</code></td><td style="color:var(--amber)">Info</td></tr>
+        <tr><td><code>termination_missing_type</code></td><td style="color:var(--amber)">Info</td></tr>
+        <tr><td><code>unknown_regret</code></td><td style="color:var(--amber)">Info</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <div class="card" style="margin-bottom:.8rem">
+      <div class="card-label">Lineage chain</div>
+      <div class="code-block" style="margin-top:.4rem">data/raw/employee_lifecycle_events.csv
+    ↓  curate/canonicalize.py
+data/curated/canonical_events.csv
+    ↓  domain/retention_metrics.py
+data/curated/fact_objective_series.csv
+    ↓  reporting/dashboard_data.py
+dashboard/index.html  (embedded JSON)</div>
+    </div>
+    <div class="card">
+      <div class="card-label">SQL cross-check (DuckDB)</div>
+      <div style="font-size:.82rem;color:var(--text2);margin-top:.4rem">Independently recomputes <code>NEW_HIRE_6M</code> in SQL. Must match pandas exactly or the run fails. SQL and pandas cannot both be wrong the same way.</div>
+    </div>
+  </div>
+</div>
+`},
+
+// ── 08 Tests ──────────────────────────────────────────────────────────────────
+{html:`
+<div class="part-divider coral">Part 2 · Architecture</div>
+<h2>6 tests — all passing</h2>
+<table class="slide-table" style="margin-top:.8rem">
+  <thead><tr><th>Test</th><th>What it guards</th></tr></thead>
+  <tbody>
+    <tr><td><code>test_manifest_verification</code></td><td>Input files have correct SHA-256 before any processing starts</td></tr>
+    <tr><td><code>test_events_curation_clean_flags</code></td><td>Country aliasing (EL→GR, ROM→RO), quality flags set correctly, <code>is_clean_for_analysis</code> gate</td></tr>
+    <tr><td><code>test_no_future_information_in_panel</code></td><td><code>available_from > eval_date</code> never reaches the association panel — the anti-leakage invariant</td></tr>
+    <tr><td><code>test_retention_metrics_ranges</code></td><td>All metric values in [0, 1]; denominator > 0 whenever value is not None</td></tr>
+    <tr><td><code>test_association_non_findings_recorded</code></td><td><code>SENIOR_HIRE_12M</code> appears with <code>insufficient_n = True</code> — explicit non-finding is documented</td></tr>
+    <tr><td><code>test_sql_cross_check</code></td><td>DuckDB SQL reproduction of <code>NEW_HIRE_6M</code> matches pandas result to zero tolerance</td></tr>
+  </tbody>
+</table>
+<div style="margin-top:1rem;font-size:.82rem;color:var(--text2)">Run with: <code style="background:rgba(255,255,255,.1);padding:.1em .4em;border-radius:4px;color:var(--teal)">pytest tests/ -v</code> &nbsp; All 6 pass in &lt;12 seconds, no network required.</div>
+`},
+
+// ── 09 Results ────────────────────────────────────────────────────────────────
+{html:`
+<div class="part-divider amber">Part 3 · Dashboard & findings · 4 min</div>
+<h2>Results vs targets</h2>
+<div class="three-col" style="margin-top:1rem">
+  <div class="card teal-border">
+    <div class="card-label">New-hire 6M retention</div>
+    <div class="big-stat teal">87.1%</div>
+    <div class="card-sub">Target ≥ 86% &nbsp;·&nbsp; n = 1,808 mature hires</div>
+    <div style="margin-top:.6rem"><span class="badge badge-teal">✅ On target</span></div>
+  </div>
+  <div class="card coral-border">
+    <div class="card-label">Senior-hire 12M retention</div>
+    <div class="big-stat coral">78.0%</div>
+    <div class="card-sub">Target ≥ 90% &nbsp;·&nbsp; n = 259 mature hires</div>
+    <div style="margin-top:.6rem"><span class="badge badge-coral">❌ –12 pp gap</span></div>
+  </div>
+  <div class="card teal-border">
+    <div class="card-label">Regretted turnover 12M</div>
+    <div class="big-stat teal">5.1%</div>
+    <div class="card-sub">Target ≤ 8% &nbsp;·&nbsp; n = 1,570</div>
+    <div style="margin-top:.6rem"><span class="badge badge-teal">✅ On target</span></div>
+  </div>
+</div>
+<p class="sub" style="margin-top:1rem;font-size:.85rem">48 Senior Leaders hired in 2025 are still within their 12-month window — excluded as immature, not counted as failures.</p>
+`},
+
+// ── 10 Finding 1 ──────────────────────────────────────────────────────────────
+{html:`
+<div class="part-divider amber">Part 3 · Findings</div>
+<h2>Finding 1 — Senior-hire attrition is structural</h2>
+<div class="two-col" style="margin-top:1rem">
+  <div>
+    <div class="finding miss">
+      <div class="finding-title">78.0% vs ≥ 90% target — a 12 pp gap. Every country misses.</div>
+      <div class="finding-body">57 of 259 mature Senior Leaders left within 12 months of joining.</div>
+    </div>
+    <div style="margin-top:1rem">
+      <table class="slide-table">
+        <thead><tr><th>Country</th><th>Rate</th><th>n</th></tr></thead>
+        <tbody>
+          <tr><td>Bulgaria (BG)</td><td class="miss">72.0%</td><td>50</td></tr>
+          <tr><td>Poland (PL)</td><td class="miss">75.6%</td><td>45</td></tr>
+          <tr><td>Ireland (IE)</td><td class="miss">79.4%</td><td>34</td></tr>
+          <tr><td>Greece (GR)</td><td class="miss">79.6%</td><td>54</td></tr>
+          <tr><td>Romania (RO)</td><td class="miss">80.0%</td><td>35</td></tr>
+          <tr><td>Italy (IT)</td><td class="miss">82.9%</td><td>41</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div>
+    <div class="card coral-border">
+      <div class="card-label">Key diagnostic: when do they leave?</div>
+      <div class="big-stat coral" style="font-size:3.5rem">3.8 mo</div>
+      <div class="card-sub">Median months-to-exit (mean 5.0 mo, min 0.4 mo)</div>
+    </div>
+    <ul class="bullet-list" style="margin-top:.8rem">
+      <li><strong>Fast attrition</strong>, not late-stage departures — points to onboarding/role-fit, not long-term culture</li>
+      <li>Exits spread evenly across 4 hire cohorts: 2021(17) · 2022(15) · 2023(13) · 2024(12)</li>
+      <li>Of 57 leavers: 23 regretted, 33 non-regretted, 1 unknown — majority is <em>voluntary</em></li>
+    </ul>
+  </div>
+</div>
+`},
+
+// ── 11 Finding 2 + 3 ─────────────────────────────────────────────────────────
+{html:`
+<div class="part-divider amber">Part 3 · Findings</div>
+<h2>Findings 2 &amp; 3</h2>
+<div class="two-col" style="margin-top:1rem">
+  <div>
+    <div class="finding info">
+      <div class="finding-title">Finding 2 — Country spread: 20 pp on new-hire retention</div>
+      <div class="finding-body">Romania lowest (80.0%), Greece/Poland comfortably above target. The 20 pp gap suggests country-specific factors (local labour market, onboarding) outweigh company-wide policy effects.</div>
+    </div>
+    <div class="finding hit" style="margin-top:.8rem">
+      <div class="finding-title">Finding 3 — Regretted turnover is well-controlled</div>
+      <div class="finding-body">5.1% overall, well below the 8% ceiling. Finance BU lowest (3.8%), Supply Chain highest (6.9%). No country at risk of breaching the target.</div>
+    </div>
+  </div>
+  <div>
+    <div class="finding non">
+      <div class="finding-title">Explicit non-finding — SENIOR_HIRE_12M associations skipped</div>
+      <div class="finding-body">
+        Senior-hire cohorts average <strong>2–3 people per country per quarter</strong> — well below the minimum of 8 pairs for any correlation.<br><br>
+        This is a structural data-density limitation, not a gap in analysis.<br><br>
+        <em>A documented non-finding is better evidence than a fabricated one.</em>
+      </div>
+    </div>
+  </div>
+</div>
+`},
+
+// ── 12 Dashboard ─────────────────────────────────────────────────────────────
+{html:`
+<div class="part-divider amber">Part 3 · Dashboard</div>
+<h2>Dashboard — four sections, one self-contained file</h2>
+<div class="four-col" style="margin-top:1rem">
+  <div class="card teal-border">
+    <div class="card-label">01 Explore</div>
+    <ul class="bullet-list" style="margin-top:.4rem">
+      <li>KPI status cards</li>
+      <li>Country / BU breakdown with progress bars</li>
+      <li>Period range filter</li>
+      <li>Cohort exclusion audit</li>
+    </ul>
+  </div>
+  <div class="card" style="border-color:rgba(96,165,250,.35)">
+    <div class="card-label">02 Understand</div>
+    <ul class="bullet-list" style="margin-top:.4rem">
+      <li>Canvas trend chart</li>
+      <li>Retention vs external signal overlay</li>
+      <li>Indicator coverage with docs links</li>
+      <li>Age-to-as-of shown</li>
+    </ul>
+  </div>
+  <div class="card" style="border-color:rgba(167,139,250,.35)">
+    <div class="card-label">03 Challenge</div>
+    <ul class="bullet-list" style="margin-top:.4rem">
+      <li>Findings grid</li>
+      <li>Full correlation table</li>
+      <li>Bonferroni-corrected p values</li>
+      <li>Explicit non-findings</li>
+    </ul>
+  </div>
+  <div class="card amber-border">
+    <div class="card-label">04 Trust</div>
+    <ul class="bullet-list" style="margin-top:.4rem">
+      <li>Quality flags + treatments</li>
+      <li>Sources: licence, cadence, lag</li>
+      <li>Methodology decisions</li>
+      <li>Freshness / ingestion status</li>
+    </ul>
+  </div>
+</div>
+<ul class="bullet-list" style="margin-top:1rem">
+  <li><strong>No server needed</strong> — single HTML file, data embedded as JSON</li>
+  <li><strong>Accessible</strong> — semantic HTML, ARIA roles, skip link, keyboard-navigable tabs</li>
+  <li><strong>Graceful empty states</strong> — every table handles "no data" without crashing</li>
+</ul>
+`},
+
+// ── 13 AI usage ───────────────────────────────────────────────────────────────
+{html:`
+<div class="part-divider purple">Part 4 · Tradeoffs, AI, next steps · 3 min</div>
+<h2>How I used AI — Cursor + Claude Sonnet</h2>
+<div class="two-col" style="margin-top:1rem">
+  <div>
+    <div class="card" style="margin-bottom:.8rem">
+      <div class="card-label" style="color:var(--teal)">✅ Accepted from AI</div>
+      <ul class="bullet-list" style="margin-top:.4rem">
+        <li>Fisher-z confidence intervals on Pearson r</li>
+        <li>Within-country demeaned Pearson as a stricter test</li>
+        <li>Canvas 2D chart instead of a charting library dependency</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-label" style="color:var(--coral)">❌ Rejected AI suggestions</div>
+      <ul class="bullet-list" style="margin-top:.4rem">
+        <li>Build whole pipeline in one pass (done in verified stages instead)</li>
+        <li>Merge "Sr Mgmt" into "Senior Leader" (rejected twice)</li>
+        <li>Default zero-denominator to 0.0 (changed to None)</li>
+      </ul>
+    </div>
+  </div>
+  <div>
+    <div class="card coral-border">
+      <div class="card-label" style="color:var(--coral)">4 real bugs caught — none hidden</div>
+      <ul class="bullet-list" style="margin-top:.4rem">
+        <li><code>numpy.bool_</code> not <code>is</code>-comparable to Python <code>True</code></li>
+        <li>Test evaluation date was inside the publication lag window</li>
+        <li><code>regretted_exit</code> string → bool upcast on CSV re-read</li>
+        <li>Eurostat changed <code>indic_em</code> code from JOBRATE → JVR (0 results, no error)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+`},
+
+// ── 14 Tradeoffs ──────────────────────────────────────────────────────────────
+{html:`
+<div class="part-divider purple">Part 4 · Tradeoffs</div>
+<h2>Explicit tradeoffs</h2>
+<table class="slide-table" style="margin-top:1rem">
+  <thead><tr><th>Decision</th><th>Alternative considered</th><th>Why I chose this</th></tr></thead>
+  <tbody>
+    <tr><td>HTML dashboard</td><td>Power BI .pbix</td><td>Versionable, testable in CI, no proprietary tool for reviewers</td></tr>
+    <tr><td>Fixtures for CI tests</td><td>Live API in tests</td><td>Deterministic, network-independent, fast (&lt;12 s)</td></tr>
+    <tr><td>Conservative publication lags</td><td>Exact Eurostat release calendar</td><td>Calendar needs network; erring cautious prevents leakage</td></tr>
+    <tr><td>"Senior Leader" only for SENIOR_HIRE_12M</td><td>Include Manager / Sr Mgmt</td><td>Cannot assume equivalence without confirmation; documented risk</td></tr>
+    <tr><td>Pearson + Spearman + within-country</td><td>Pearson only</td><td>Within-country demeaning is stricter; acknowledges country fixed effects</td></tr>
+    <tr><td>None for zero-denominator</td><td>Return 0.0</td><td>Empty cohort ≠ 0% retention; conflating the two misrepresents the data</td></tr>
+  </tbody>
+</table>
+<p class="sub" style="margin-top:.8rem;font-size:.82rem"><strong>Remaining risk:</strong> Publication-lag values are estimates, not verified against the live release calendar. The HICP dataset (<code>prc_hicp_manr</code>) is deprecated by Eurostat — one-line fix in <code>config.py</code>.</p>
+`},
+
+// ── 15 Next steps ─────────────────────────────────────────────────────────────
+{html:`
+<div class="part-divider purple">Part 4 · Next steps</div>
+<h2>What's next — given more time</h2>
+<div class="two-col" style="margin-top:1rem">
+  <ul class="bullet-list">
+    <li><strong>Run against live APIs</strong> — produce real associations with proper uncertainty bands, not fixture-run demonstrations</li>
+    <li><strong>Migrate HICP to <code>prc_hicp_minr</code></strong> — Eurostat's replacement dataset; one-line change in <code>config.py</code></li>
+    <li><strong>Revision detection</strong> — compare newly fetched periods against last stored value; alert on unexpected backward revisions</li>
+    <li><strong>Exit-reason data</strong> — a single field (resignation / redundancy / performance) would turn the Senior Leader attrition finding from inference into evidence</li>
+  </ul>
+  <div>
+    <div class="card">
+      <div class="card-label">Production path</div>
+      <div class="code-block" style="margin-top:.4rem"><span class="c-teal">ADF</span>  →  orchestration + scheduling
+  ↓
+<span class="c-amber">Databricks</span>
+  raw layer  (landed JSON)
+  curated layer  (canonical)
+  gold layer  (metrics, panel)
+  ↓
+<span class="c-purple">Power BI</span>  →  live-refresh dashboard
+  + <span class="c-teal">Key Vault</span>  for future keyed APIs
+  + <span class="c-coral">Alerting</span>  on partial failure</div>
+      <div style="font-size:.75rem;color:var(--text2);margin-top:.4rem">Full diagram in <code>docs/architecture.md</code></div>
+    </div>
+  </div>
+</div>
+`},
+
+// ── 16 Closing ────────────────────────────────────────────────────────────────
+{type:'cover', html:`
+<div class="slide-num">Thank you</div>
+<h1>Ready for <span class="accent">Q&amp;A</span></h1>
+<p class="sub" style="margin-top:.8rem">The dashboard is open at <code style="color:var(--teal);background:rgba(45,212,191,.1);padding:.1em .5em;border-radius:5px">dashboard/index.html</code></p>
+<p class="sub" style="margin-top:.5rem">All code, tests, and docs are in the repository — ready to navigate any function live.</p>
+<div class="four-col" style="margin-top:2rem;max-width:700px">
+  <div class="card teal-border" style="text-align:center">
+    <div class="big-stat teal" style="font-size:2.2rem">87.1%</div>
+    <div class="card-sub">New-hire 6M</div>
+  </div>
+  <div class="card coral-border" style="text-align:center">
+    <div class="big-stat coral" style="font-size:2.2rem">78.0%</div>
+    <div class="card-sub">Senior 12M</div>
+  </div>
+  <div class="card teal-border" style="text-align:center">
+    <div class="big-stat teal" style="font-size:2.2rem">5.1%</div>
+    <div class="card-sub">Turnover</div>
+  </div>
+  <div class="card" style="text-align:center;border-color:rgba(96,165,250,.35)">
+    <div class="big-stat" style="font-size:2.2rem;color:var(--blue)">6/6</div>
+    <div class="card-sub">Tests passing</div>
+  </div>
+</div>
+`},
+
+]; // end SLIDES
+
+// ── render ──────────────────────────────────────────────────────────────────
+const deck = document.getElementById('deck');
+const counter = document.getElementById('slide-counter');
+const bar = document.getElementById('progress-bar');
+let current = 0;
+const els = [];
+
+SLIDES.forEach((s, i) => {
+  const div = document.createElement('div');
+  div.className = 'slide' + (s.type === 'cover' ? ' slide-cover' : '');
+  div.innerHTML = s.html;
+  div.setAttribute('aria-label', 'Slide ' + (i + 1));
+  deck.appendChild(div);
+  els.push(div);
+});
+
+function goTo(n) {
+  const prev = current;
+  current = Math.max(0, Math.min(SLIDES.length - 1, n));
+  if (prev === current) return;
+  els[prev].classList.add('out');
+  setTimeout(() => { els[prev].classList.remove('active', 'out'); }, 320);
+  els[current].classList.add('active');
+  counter.textContent = (current + 1) + ' / ' + SLIDES.length;
+  bar.style.width = ((current + 1) / SLIDES.length * 100) + '%';
+}
+
+// init
+els[0].classList.add('active');
+counter.textContent = '1 / ' + SLIDES.length;
+bar.style.width = (1 / SLIDES.length * 100) + '%';
+
+document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); goTo(current + 1); }
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); goTo(current - 1); }
+  if (e.key === 'Home') goTo(0);
+  if (e.key === 'End') goTo(SLIDES.length - 1);
+});
+</script>
+</body>
+</html>

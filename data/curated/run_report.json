@@ -1,7 +1,7 @@
 {
-  "run_timestamp": "2026-09-29T10:36:51Z",
+  "run_timestamp": "2026-09-29T12:15:21Z",
   "source_mode": "fixtures",
-  "total_duration_s": 2.29,
+  "total_duration_s": 2.25,
   "exit_code": 0,
   "stages": [
     {
@@ -14,56 +14,56 @@
     {
       "stage": "ingest_external",
       "status": "ok",
-      "duration_s": 0.019,
+      "duration_s": 0.016,
       "rows": 1228,
       "detail": "source=fixtures, failed=[]"
     },
     {
       "stage": "curate_external",
       "status": "ok",
-      "duration_s": 0.089,
+      "duration_s": 0.087,
       "rows": 1228,
       "detail": ""
     },
     {
       "stage": "curate_workforce",
       "status": "ok",
-      "duration_s": 0.044,
+      "duration_s": 0.039,
       "rows": 2407,
       "detail": ""
     },
     {
       "stage": "compute_metrics",
       "status": "ok",
-      "duration_s": 0.209,
+      "duration_s": 0.2,
       "rows": 1710,
       "detail": ""
     },
     {
       "stage": "analysis_panel_association",
       "status": "ok",
-      "duration_s": 1.443,
+      "duration_s": 1.401,
       "rows": 687,
       "detail": ""
     },
     {
       "stage": "sql_cross_check",
       "status": "ok",
-      "duration_s": 0.295,
+      "duration_s": 0.309,
       "rows": null,
       "detail": "{'NEW_HIRE_6M': 'PASS', 'SENIOR_HIRE_12M': 'PASS', 'REGRETTED_TURNOVER_12M': 'PASS'}"
     },
     {
       "stage": "write_curated_csvs",
       "status": "ok",
-      "duration_s": 0.052,
+      "duration_s": 0.061,
       "rows": null,
       "detail": ""
     },
     {
       "stage": "build_dashboard",
       "status": "ok",
-      "duration_s": 0.132,
+      "duration_s": 0.137,
       "rows": null,
       "detail": ""
     }
