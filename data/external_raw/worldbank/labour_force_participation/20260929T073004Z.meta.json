@@ -1,0 +1,13 @@
+{
+  "indicator_id": "labour_force_participation",
+  "origin": "live",
+  "params": {
+    "date": "2019:2025",
+    "format": "json",
+    "per_page": 1000
+  },
+  "provider": "worldbank",
+  "retrieved_at": "2026-09-29T07:30:04Z",
+  "sha256": "10be6cd914d046040bd79cb1c5a0ed935ef010bb6250aea53c3d6ebc2a12617b",
+  "url": "https://api.worldbank.org/v2/country/GRC;ROU;POL;ITA;IRL;BGR/indicator/SL.TLF.CACT.ZS?format=json&per_page=1000&date=2019%3A2025"
+}

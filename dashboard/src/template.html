@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Asteria — Workforce Retention Analytics</title>
+<meta name="description" content="External labour-market signals versus workforce retention objectives across six European markets.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* INLINE_CSS */
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="#" class="brand">
+      <span class="brand-icon">AR</span>
+      Asteria Retention
+    </a>
+    <nav aria-label="Dashboard sections">
+      <ul class="nav-links">
+        <li><a href="#explore"   id="nav-explore">Explore</a></li>
+        <li><a href="#understand" id="nav-understand">Understand</a></li>
+        <li><a href="#challenge" id="nav-challenge">Challenge</a></li>
+        <li><a href="#trust"     id="nav-trust">Trust</a></li>
+      </ul>
+    </nav>
+    <span class="topbar-meta" id="run-meta"></span>
+  </div>
+</header>
+
+<main id="main">
+  <div id="notices"></div>
+
+  <!-- ── 01 EXPLORE ── -->
+  <section id="explore" class="panel" aria-labelledby="explore-heading">
+    <div class="panel-head">
+      <h2 id="explore-heading"><span class="section-badge" aria-hidden="true">01</span>Explore — Objective Status</h2>
+    </div>
+    <p class="panel-lead">Overall retention performance against targets, then by country and business unit.</p>
+
+    <!-- headline stat cards -->
+    <div class="stat-grid" id="stat-cards" aria-label="Retention objective headline results"></div>
+
+    <!-- filters -->
+    <div class="filter-bar" role="search" aria-label="Filter objective breakdown">
+      <label for="sel-objective">Objective
+        <select id="sel-objective"></select>
+      </label>
+      <label for="sel-country">Country
+        <select id="sel-country"></select>
+      </label>
+      <label for="sel-bu">Business unit
+        <select id="sel-bu"></select>
+      </label>
+    </div>
+
+    <!-- tab: by country / by BU -->
+    <div class="tab-bar" role="tablist" aria-label="Breakdown view">
+      <button class="tab-btn active" role="tab" aria-selected="true"  id="tab-country" aria-controls="pane-country">By country</button>
+      <button class="tab-btn"        role="tab" aria-selected="false" id="tab-bu"      aria-controls="pane-bu">By business unit</button>
+    </div>
+    <div id="pane-country" role="tabpanel" aria-labelledby="tab-country">
+      <div class="table-wrap"><table id="tbl-country" aria-label="Retention by country">
+        <thead><tr><th>Country</th><th>Value</th><th>Target</th><th>N</th><th>Progress</th><th>Status</th></tr></thead>
+        <tbody id="tbody-country"></tbody>
+      </table></div>
+    </div>
+    <div id="pane-bu" role="tabpanel" aria-labelledby="tab-bu" hidden>
+      <div class="table-wrap"><table id="tbl-bu" aria-label="Retention by business unit">
+        <thead><tr><th>Business unit</th><th>Value</th><th>Target</th><th>N</th><th>Progress</th><th>Status</th></tr></thead>
+        <tbody id="tbody-bu"></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- ── 02 UNDERSTAND ── -->
+  <section id="understand" class="panel" aria-labelledby="understand-heading">
+    <div class="panel-head">
+      <h2 id="understand-heading"><span class="section-badge" aria-hidden="true">02</span>Understand — External Signals</h2>
+    </div>
+    <p class="panel-lead">Labour-market and macroeconomic indicators loaded for the six operating countries.
+      Orange rows are from synthetic fixture files and are for demonstration only — run with <code>--source live</code> for real values.</p>
+    <div class="table-wrap">
+      <table id="tbl-ext" aria-label="External indicator coverage">
+        <thead><tr><th>Indicator</th><th>Lens</th><th>Freq</th><th>Latest period</th><th>Observations</th><th>Origin</th></tr></thead>
+        <tbody id="tbody-ext"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── 03 CHALLENGE ── -->
+  <section id="challenge" class="panel" aria-labelledby="challenge-heading">
+    <div class="panel-head">
+      <h2 id="challenge-heading"><span class="section-badge" aria-hidden="true">03</span>Challenge — Association Analysis</h2>
+    </div>
+    <div class="callout" id="assoc-notice">
+      <span aria-hidden="true">⚠</span>
+      <span>Observational only — correlation does not imply causation. Synthetic fixture results demonstrate pipeline mechanics, not a real finding.</span>
+    </div>
+    <div class="table-wrap">
+      <table id="tbl-assoc" aria-label="Correlation results between retention objectives and external indicators">
+        <thead><tr><th>Objective</th><th>Indicator</th><th>Method</th><th>n</th><th>r</th><th>95 % CI</th><th>p</th><th>p (Bonf.)</th><th>Note</th></tr></thead>
+        <tbody id="tbody-assoc"></tbody>
+      </table>
+    </div>
+    <details>
+      <summary>How to read this table</summary>
+      <div>
+        <dl class="method-list mt-05">
+          <dt>r</dt><dd>Pearson or Spearman correlation coefficient. Ranges −1 to +1. Near zero means no linear relationship.</dd>
+          <dt>95 % CI</dt><dd>Bootstrap confidence interval. If it straddles zero the finding is not statistically distinguishable from no effect.</dd>
+          <dt>p (Bonf.)</dt><dd>p-value corrected for multiple comparisons. Values above 0.05 are not significant after correction.</dd>
+          <dt>pearson_within_country</dt><dd>Correlation after removing country-level means (demeaning). Controls for fixed country effects — a stricter test.</dd>
+        </dl>
+      </div>
+    </details>
+  </section>
+
+  <!-- ── 04 TRUST ── -->
+  <section id="trust" class="panel" aria-labelledby="trust-heading">
+    <div class="panel-head">
+      <h2 id="trust-heading"><span class="section-badge" aria-hidden="true">04</span>Trust — Quality, Sources &amp; Methodology</h2>
+    </div>
+
+    <div class="tab-bar" role="tablist" aria-label="Trust sub-sections">
+      <button class="tab-btn active" role="tab" aria-selected="true"  id="tab-quality"  aria-controls="pane-quality">Quality flags</button>
+      <button class="tab-btn"        role="tab" aria-selected="false" id="tab-sources"  aria-controls="pane-sources">Sources</button>
+      <button class="tab-btn"        role="tab" aria-selected="false" id="tab-method"   aria-controls="pane-method">Methodology</button>
+    </div>
+
+    <div id="pane-quality" role="tabpanel" aria-labelledby="tab-quality">
+      <div class="table-wrap">
+        <table id="tbl-quality" aria-label="Data quality flags and treatments">
+          <thead><tr><th>Flag</th><th>Severity</th><th>Count</th><th>% of rows</th><th>Treatment</th></tr></thead>
+          <tbody id="tbody-quality"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="pane-sources" role="tabpanel" aria-labelledby="tab-sources" hidden>
+      <div id="sources-list"></div>
+    </div>
+
+    <div id="pane-method" role="tabpanel" aria-labelledby="tab-method" hidden>
+      <dl class="method-list" id="method-list"></dl>
+      <p class="small text-muted mt-1" id="pub-lag-note"></p>
+      <p class="small text-muted mt-05" id="freq-note"></p>
+    </div>
+  </section>
+</main>
+
+<footer role="contentinfo">
+  Asteria Consumer Products (fictional) — Retention Analytics &mdash; data as-of <span id="footer-asof"></span>
+</footer>
+
+<script id="asteria-data" type="application/json">/* INLINE_DATA */</script>
+<script>
+// INLINE_JS
+</script>
+</body>
+</html>

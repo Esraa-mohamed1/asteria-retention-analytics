@@ -1,0 +1,22 @@
+{
+  "indicator_id": "job_vacancy_rate",
+  "origin": "live",
+  "params": {
+    "format": "JSON",
+    "geo": [
+      "EL",
+      "RO",
+      "PL",
+      "IT",
+      "IE",
+      "BG"
+    ],
+    "indic_em": "JOBRATE",
+    "lang": "EN",
+    "sinceTimePeriod": "2019-Q1"
+  },
+  "provider": "eurostat",
+  "retrieved_at": "2026-09-29T06:22:26Z",
+  "sha256": "2b1a5a7af365065d07ce76562d39d46915c09c489fd4f61b0ea29114b2803a66",
+  "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/jvs_q_nace2?format=JSON&lang=EN&geo=EL&geo=RO&geo=PL&geo=IT&geo=IE&geo=BG&sinceTimePeriod=2019-Q1&indic_em=JOBRATE"
+}

@@ -1,0 +1,23 @@
+{
+  "indicator_id": "hicp_inflation",
+  "origin": "live",
+  "params": {
+    "coicop": "CP00",
+    "format": "JSON",
+    "geo": [
+      "EL",
+      "RO",
+      "PL",
+      "IT",
+      "IE",
+      "BG"
+    ],
+    "lang": "EN",
+    "sinceTimePeriod": "2019-01",
+    "unit": "RCH_A"
+  },
+  "provider": "eurostat",
+  "retrieved_at": "2026-09-29T06:56:13Z",
+  "sha256": "468ca532ddac8a09abdeeaef7094d2cf30820a5dcfb25c115e53c2eef52a7f13",
+  "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_manr?format=JSON&lang=EN&geo=EL&geo=RO&geo=PL&geo=IT&geo=IE&geo=BG&sinceTimePeriod=2019-01&unit=RCH_A&coicop=CP00"
+}

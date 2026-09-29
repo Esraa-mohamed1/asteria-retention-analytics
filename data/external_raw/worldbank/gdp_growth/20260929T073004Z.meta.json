@@ -1,0 +1,13 @@
+{
+  "indicator_id": "gdp_growth",
+  "origin": "live",
+  "params": {
+    "date": "2019:2025",
+    "format": "json",
+    "per_page": 1000
+  },
+  "provider": "worldbank",
+  "retrieved_at": "2026-09-29T07:30:04Z",
+  "sha256": "74aaa64e3c29d72b8e2c90d0132e03c0d601047df98280f5b09dd4fbaa98c5af",
+  "url": "https://api.worldbank.org/v2/country/GRC;ROU;POL;ITA;IRL;BGR/indicator/NY.GDP.MKTP.KD.ZG?format=json&per_page=1000&date=2019%3A2025"
+}

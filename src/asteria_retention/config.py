@@ -111,8 +111,10 @@ INDICATORS: tuple[Indicator, ...] = (
         unit="% of posts",
         publication_lag_days=90,
         max_age_days=200,
-        filters={"indic_em": "JOBRATE"},
+        # Uses prefer for indic_em to handle both current Eurostat (JVR) and fixture fallback (JOBRATE).
+        filters={},
         prefer={
+            "indic_em": ("JVR", "JOBRATE"),  # JVR = current code; JOBRATE = old (fixtures)
             "s_adj": ("NSA", "SA"),
             "nace_r2": ("B-S", "A-S"),
             "sizeclas": ("TOTAL", "GE10"),
