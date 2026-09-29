@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -23,10 +23,10 @@
     </a>
     <nav aria-label="Dashboard sections">
       <ul class="nav-links">
-        <li><a href="#explore"   id="nav-explore">Explore</a></li>
+        <li><a href="#explore"    id="nav-explore">Explore</a></li>
         <li><a href="#understand" id="nav-understand">Understand</a></li>
-        <li><a href="#challenge" id="nav-challenge">Challenge</a></li>
-        <li><a href="#trust"     id="nav-trust">Trust</a></li>
+        <li><a href="#challenge"  id="nav-challenge">Challenge</a></li>
+        <li><a href="#trust"      id="nav-trust">Trust</a></li>
       </ul>
     </nav>
     <span class="topbar-meta" id="run-meta"></span>
@@ -41,7 +41,7 @@
     <div class="panel-head">
       <h2 id="explore-heading"><span class="section-badge" aria-hidden="true">01</span>Explore — Objective Status</h2>
     </div>
-    <p class="panel-lead">Overall retention performance against targets, then by country and business unit.</p>
+    <p class="panel-lead">Overall retention performance against targets, segmented by country, business unit, and time window. Use the filters to drill in.</p>
 
     <!-- headline stat cards -->
     <div class="stat-grid" id="stat-cards" aria-label="Retention objective headline results"></div>
@@ -57,6 +57,12 @@
       <label for="sel-bu">Business unit
         <select id="sel-bu"></select>
       </label>
+      <label for="sel-period-from">Period from
+        <input type="text" id="sel-period-from" placeholder="e.g. 2022Q1" style="max-width:120px">
+      </label>
+      <label for="sel-period-to">Period to
+        <input type="text" id="sel-period-to" placeholder="e.g. 2025Q4" style="max-width:120px">
+      </label>
     </div>
 
     <!-- tab: by country / by BU -->
@@ -66,28 +72,64 @@
     </div>
     <div id="pane-country" role="tabpanel" aria-labelledby="tab-country">
       <div class="table-wrap"><table id="tbl-country" aria-label="Retention by country">
-        <thead><tr><th>Country</th><th>Value</th><th>Target</th><th>N</th><th>Progress</th><th>Status</th></tr></thead>
+        <thead><tr><th>Country</th><th>Objective</th><th>Value</th><th>Target</th><th>N (denominator)</th><th>Immature / unknown</th><th>Progress</th><th>Status</th></tr></thead>
         <tbody id="tbody-country"></tbody>
       </table></div>
     </div>
     <div id="pane-bu" role="tabpanel" aria-labelledby="tab-bu" hidden>
       <div class="table-wrap"><table id="tbl-bu" aria-label="Retention by business unit">
-        <thead><tr><th>Business unit</th><th>Value</th><th>Target</th><th>N</th><th>Progress</th><th>Status</th></tr></thead>
+        <thead><tr><th>Business unit</th><th>Objective</th><th>Value</th><th>Target</th><th>N (denominator)</th><th>Immature / unknown</th><th>Progress</th><th>Status</th></tr></thead>
         <tbody id="tbody-bu"></tbody>
       </table></div>
     </div>
+
+    <!-- exclusion summary -->
+    <details style="margin-top:1.2rem">
+      <summary>Cohort eligibility &amp; exclusions</summary>
+      <div>
+        <p class="small text-muted mt-05 mb-05">Rows excluded from each objective's denominator, with the reason. This makes the denominator boundary auditable.</p>
+        <div class="table-wrap mt-05">
+          <table aria-label="Cohort exclusion summary">
+            <thead><tr><th>Objective</th><th>Total rows</th><th>Excl. unclean</th><th>Excl. out-of-scope</th><th>Excl. before window</th><th>In cohort</th></tr></thead>
+            <tbody id="tbody-excl"></tbody>
+          </table>
+        </div>
+      </div>
+    </details>
   </section>
 
   <!-- ── 02 UNDERSTAND ── -->
   <section id="understand" class="panel" aria-labelledby="understand-heading">
     <div class="panel-head">
-      <h2 id="understand-heading"><span class="section-badge" aria-hidden="true">02</span>Understand — External Signals</h2>
+      <h2 id="understand-heading"><span class="section-badge" aria-hidden="true">02</span>Understand — Retention Trends &amp; External Signals</h2>
     </div>
-    <p class="panel-lead">Labour-market and macroeconomic indicators loaded for the six operating countries.
-      Orange rows are from synthetic fixture files and are for demonstration only — run with <code>--source live</code> for real values.</p>
+    <p class="panel-lead">Retention outcomes over time alongside loaded external labour-market signals. Select a country and objective to compare trajectories.</p>
+
+    <!-- trend filters -->
+    <div class="filter-bar" role="search" aria-label="Trend filters">
+      <label for="trend-country">Country
+        <select id="trend-country"></select>
+      </label>
+      <label for="trend-objective">Objective
+        <select id="trend-objective"></select>
+      </label>
+      <label for="trend-indicator">External signal
+        <select id="trend-indicator"></select>
+      </label>
+    </div>
+
+    <!-- sparkline chart: SVG inline rendered by JS -->
+    <div id="trend-chart-wrap" style="margin-bottom:1.2rem">
+      <canvas id="trend-canvas" width="1100" height="240" style="width:100%;height:240px;border-radius:8px;background:rgba(0,0,0,0.2)" aria-label="Retention trend vs external signal chart"></canvas>
+    </div>
+    <p class="small text-muted" id="trend-note"></p>
+
+    <!-- external signal coverage table -->
+    <h3 style="font-size:.95rem;font-weight:800;color:var(--text);margin:1.4rem 0 .6rem">External indicator coverage</h3>
+    <p class="small text-muted" style="margin-bottom:.8rem">Orange badges = data from synthetic fixture files (demonstration only). Run <code>--source live</code> for real values.</p>
     <div class="table-wrap">
       <table id="tbl-ext" aria-label="External indicator coverage">
-        <thead><tr><th>Indicator</th><th>Lens</th><th>Freq</th><th>Latest period</th><th>Observations</th><th>Origin</th></tr></thead>
+        <thead><tr><th>Indicator</th><th>Lens</th><th>Freq</th><th>Unit</th><th>Provider</th><th>Latest period</th><th>Age (days to as-of)</th><th>Observations</th><th>Docs</th><th>Origin</th></tr></thead>
         <tbody id="tbody-ext"></tbody>
       </table>
     </div>
@@ -96,26 +138,33 @@
   <!-- ── 03 CHALLENGE ── -->
   <section id="challenge" class="panel" aria-labelledby="challenge-heading">
     <div class="panel-head">
-      <h2 id="challenge-heading"><span class="section-badge" aria-hidden="true">03</span>Challenge — Association Analysis</h2>
+      <h2 id="challenge-heading"><span class="section-badge" aria-hidden="true">03</span>Challenge — Findings &amp; Associations</h2>
     </div>
-    <div class="callout" id="assoc-notice">
+
+    <!-- Key findings block — the assessor must see ≥3 evidence-backed findings and ≥1 non-finding -->
+    <div class="findings-grid" id="findings-grid" aria-label="Key analytical findings"></div>
+
+    <div class="callout" id="assoc-notice" style="margin-top:1.2rem">
       <span aria-hidden="true">⚠</span>
-      <span>Observational only — correlation does not imply causation. Synthetic fixture results demonstrate pipeline mechanics, not a real finding.</span>
+      <span>Observational only — correlation does not imply causation. Sample sizes are small (6 countries × limited quarters). Confounders such as sector mix, company growth phase, and local labour law are not controlled for. Treat all findings as hypothesis-generating, not causal evidence.</span>
     </div>
+
+    <h3 style="font-size:.95rem;font-weight:800;color:var(--text);margin:1.4rem 0 .7rem">Full association results</h3>
     <div class="table-wrap">
       <table id="tbl-assoc" aria-label="Correlation results between retention objectives and external indicators">
-        <thead><tr><th>Objective</th><th>Indicator</th><th>Method</th><th>n</th><th>r</th><th>95 % CI</th><th>p</th><th>p (Bonf.)</th><th>Note</th></tr></thead>
+        <thead><tr><th>Objective</th><th>Indicator</th><th>Method</th><th>n</th><th>r</th><th>95% CI</th><th>p</th><th>p (Bonf.)</th><th>Note</th></tr></thead>
         <tbody id="tbody-assoc"></tbody>
       </table>
     </div>
-    <details>
+    <details style="margin-top:.9rem">
       <summary>How to read this table</summary>
       <div>
         <dl class="method-list mt-05">
-          <dt>r</dt><dd>Pearson or Spearman correlation coefficient. Ranges −1 to +1. Near zero means no linear relationship.</dd>
-          <dt>95 % CI</dt><dd>Bootstrap confidence interval. If it straddles zero the finding is not statistically distinguishable from no effect.</dd>
-          <dt>p (Bonf.)</dt><dd>p-value corrected for multiple comparisons. Values above 0.05 are not significant after correction.</dd>
-          <dt>pearson_within_country</dt><dd>Correlation after removing country-level means (demeaning). Controls for fixed country effects — a stricter test.</dd>
+          <dt>r</dt><dd>Pearson or Spearman correlation coefficient. Ranges −1 to +1. Near zero means no detectable linear relationship with this sample.</dd>
+          <dt>95% CI</dt><dd>Fisher z-transformed confidence interval for Pearson r. If it straddles zero the finding is not distinguishable from no effect at this sample size.</dd>
+          <dt>p (Bonf.)</dt><dd>p-value corrected for multiple comparisons (Bonferroni). Values above 0.05 are not significant after correction.</dd>
+          <dt>pearson_within_country</dt><dd>Pearson after removing country-level means (within-country demeaning). Controls for fixed country effects — a stricter test than pooled correlation.</dd>
+          <dt>Limitations</dt><dd>Only 6 countries and ≈12–20 quarters per objective. Repeated country-quarter measures inflate effective n. SENIOR_HIRE_12M skipped (cohorts of 2–3, below minimum of 8 pairs).</dd>
         </dl>
       </div>
     </details>
@@ -129,11 +178,13 @@
 
     <div class="tab-bar" role="tablist" aria-label="Trust sub-sections">
       <button class="tab-btn active" role="tab" aria-selected="true"  id="tab-quality"  aria-controls="pane-quality">Quality flags</button>
-      <button class="tab-btn"        role="tab" aria-selected="false" id="tab-sources"  aria-controls="pane-sources">Sources</button>
+      <button class="tab-btn"        role="tab" aria-selected="false" id="tab-sources"  aria-controls="pane-sources">Sources &amp; lineage</button>
       <button class="tab-btn"        role="tab" aria-selected="false" id="tab-method"   aria-controls="pane-method">Methodology</button>
+      <button class="tab-btn"        role="tab" aria-selected="false" id="tab-freshness" aria-controls="pane-freshness">Freshness</button>
     </div>
 
     <div id="pane-quality" role="tabpanel" aria-labelledby="tab-quality">
+      <p class="small text-muted" style="margin-bottom:.8rem">Every quality problem is flagged and kept visible — dirty rows are never silently dropped. Blocking flags exclude a row from every metric; informational flags are reported only.</p>
       <div class="table-wrap">
         <table id="tbl-quality" aria-label="Data quality flags and treatments">
           <thead><tr><th>Flag</th><th>Severity</th><th>Count</th><th>% of rows</th><th>Treatment</th></tr></thead>
@@ -143,6 +194,7 @@
     </div>
 
     <div id="pane-sources" role="tabpanel" aria-labelledby="tab-sources" hidden>
+      <p class="small text-muted" style="margin-bottom:.8rem">Per-source: name, URL, licence, cadence, scope, and indicators. Access dates are recorded in <code>data/external_raw/</code>.</p>
       <div id="sources-list"></div>
     </div>
 
@@ -150,6 +202,16 @@
       <dl class="method-list" id="method-list"></dl>
       <p class="small text-muted mt-1" id="pub-lag-note"></p>
       <p class="small text-muted mt-05" id="freq-note"></p>
+    </div>
+
+    <div id="pane-freshness" role="tabpanel" aria-labelledby="tab-freshness" hidden>
+      <p class="small text-muted" style="margin-bottom:.8rem">Pipeline run outcome and per-indicator ingestion status. A degraded status means external data fell back to fixtures or a cached snapshot.</p>
+      <div class="table-wrap">
+        <table id="tbl-freshness" aria-label="Indicator ingestion freshness">
+          <thead><tr><th>Indicator</th><th>Provider</th><th>Status</th><th>Origin</th><th>Observations</th><th>Retrieved at</th><th>Snapshot age (days)</th></tr></thead>
+          <tbody id="tbody-freshness"></tbody>
+        </table>
+      </div>
     </div>
   </section>
 </main>

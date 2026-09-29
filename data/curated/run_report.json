@@ -1,69 +1,69 @@
 {
-  "run_timestamp": "2026-09-29T07:30:00Z",
-  "source_mode": "live",
-  "total_duration_s": 11.53,
+  "run_timestamp": "2026-09-29T10:36:51Z",
+  "source_mode": "fixtures",
+  "total_duration_s": 2.29,
   "exit_code": 0,
   "stages": [
     {
       "stage": "manifest_verify",
       "status": "ok",
-      "duration_s": 0.007,
+      "duration_s": 0.002,
       "rows": null,
       "detail": ""
     },
     {
       "stage": "ingest_external",
       "status": "ok",
-      "duration_s": 3.556,
-      "rows": 1303,
-      "detail": "source=live, failed=[]"
+      "duration_s": 0.019,
+      "rows": 1228,
+      "detail": "source=fixtures, failed=[]"
     },
     {
       "stage": "curate_external",
       "status": "ok",
-      "duration_s": 0.147,
-      "rows": 1303,
+      "duration_s": 0.089,
+      "rows": 1228,
       "detail": ""
     },
     {
       "stage": "curate_workforce",
       "status": "ok",
-      "duration_s": 0.045,
+      "duration_s": 0.044,
       "rows": 2407,
       "detail": ""
     },
     {
       "stage": "compute_metrics",
       "status": "ok",
-      "duration_s": 0.264,
+      "duration_s": 0.209,
       "rows": 1710,
       "detail": ""
     },
     {
       "stage": "analysis_panel_association",
       "status": "ok",
-      "duration_s": 6.695,
-      "rows": 690,
+      "duration_s": 1.443,
+      "rows": 687,
       "detail": ""
     },
     {
       "stage": "sql_cross_check",
       "status": "ok",
-      "duration_s": 0.516,
+      "duration_s": 0.295,
       "rows": null,
       "detail": "{'NEW_HIRE_6M': 'PASS', 'SENIOR_HIRE_12M': 'PASS', 'REGRETTED_TURNOVER_12M': 'PASS'}"
     },
     {
       "stage": "write_curated_csvs",
       "status": "ok",
-      "duration_s": 0.058,
+      "duration_s": 0.052,
       "rows": null,
       "detail": ""
     },
     {
       "stage": "build_dashboard",
       "status": "ok",
-      "duration_s": 0.241,
+      "duration_s": 0.132,
       "rows": null,
       "detail": ""
     }
@@ -73,10 +73,10 @@
       "indicator_id": "unemployment_rate",
       "provider": "eurostat",
       "status": "ok",
-      "origin": "live",
-      "n_observations": 547,
-      "retrieved_at": "2026-09-29T07:30:01Z",
-      "snapshot_age_days": 0,
+      "origin": "fixture_synthetic",
+      "n_observations": 498,
+      "retrieved_at": "2026-01-15T08:00:00Z",
+      "snapshot_age_days": 257,
       "error": "",
       "note": ""
     },
@@ -84,10 +84,10 @@
       "indicator_id": "job_vacancy_rate",
       "provider": "eurostat",
       "status": "ok",
-      "origin": "live",
-      "n_observations": 168,
-      "retrieved_at": "2026-09-29T07:30:02Z",
-      "snapshot_age_days": 0,
+      "origin": "fixture_synthetic",
+      "n_observations": 162,
+      "retrieved_at": "2026-01-15T08:00:00Z",
+      "snapshot_age_days": 257,
       "error": "",
       "note": ""
     },
@@ -95,10 +95,10 @@
       "indicator_id": "hicp_inflation",
       "provider": "eurostat",
       "status": "ok",
-      "origin": "live",
-      "n_observations": 504,
-      "retrieved_at": "2026-09-29T07:30:03Z",
-      "snapshot_age_days": 0,
+      "origin": "fixture_synthetic",
+      "n_observations": 498,
+      "retrieved_at": "2026-01-15T08:00:00Z",
+      "snapshot_age_days": 257,
       "error": "",
       "note": ""
     },
@@ -106,10 +106,10 @@
       "indicator_id": "gdp_growth",
       "provider": "worldbank",
       "status": "ok",
-      "origin": "live",
-      "n_observations": 42,
-      "retrieved_at": "2026-09-29T07:30:04Z",
-      "snapshot_age_days": 0,
+      "origin": "fixture_synthetic",
+      "n_observations": 34,
+      "retrieved_at": "2026-01-15T08:00:00Z",
+      "snapshot_age_days": 257,
       "error": "",
       "note": ""
     },
@@ -117,10 +117,10 @@
       "indicator_id": "labour_force_participation",
       "provider": "worldbank",
       "status": "ok",
-      "origin": "live",
-      "n_observations": 42,
-      "retrieved_at": "2026-09-29T07:30:04Z",
-      "snapshot_age_days": 0,
+      "origin": "fixture_synthetic",
+      "n_observations": 36,
+      "retrieved_at": "2026-01-15T08:00:00Z",
+      "snapshot_age_days": 257,
       "error": "",
       "note": ""
     }
