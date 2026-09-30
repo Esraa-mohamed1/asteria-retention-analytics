@@ -23,7 +23,6 @@ Usage on any OS:
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 from pathlib import Path
 
@@ -70,14 +69,14 @@ def cmd_doctor(args: argparse.Namespace) -> int:
             payload = client.fetch(indicator, CANONICAL_COUNTRIES[:2])
             obs = client.parse(indicator, payload)
             print(f"OK ({len(obs)} observations)")
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001 — doctor must survive any provider error
             all_ok = False
-            print(f"FAIL")
+            print("FAIL")
             print(f"    → {exc}")
             if "dimension" in str(exc).lower() or "filter" in str(exc).lower():
-                print(f"    → Hint: check Indicator.filters and Indicator.prefer in config.py")
+                print("    → Hint: check Indicator.filters and Indicator.prefer in config.py")
             elif "403" in str(exc) or "forbidden" in str(exc).lower():
-                print(f"    → Hint: API may require authentication or is geo-blocked")
+                print("    → Hint: API may require authentication or is geo-blocked")
             elif "404" in str(exc):
                 print(f"    → Hint: dataset code may have changed — check {indicator.docs_url}")
 
@@ -91,10 +90,11 @@ def cmd_doctor(args: argparse.Namespace) -> int:
 
 def cmd_build_dashboard(args: argparse.Namespace) -> int:
     """Rebuild the dashboard from existing curated CSVs."""
+    import pandas as pd
+
     from asteria_retention.config import (
         DATA_CURATED,
         OBJECTIVES_CSV,
-        WORKFORCE_AS_OF,
     )
     from asteria_retention.domain.retention_metrics import load_objectives
     from asteria_retention.ingestion.base import utc_now_iso
@@ -103,8 +103,6 @@ def cmd_build_dashboard(args: argparse.Namespace) -> int:
         build_dashboard_payload,
         validate_payload_json,
     )
-
-    import pandas as pd
 
     def _load_or_empty(path: Path, **kwargs) -> pd.DataFrame:
         return pd.read_csv(path, **kwargs) if path.exists() else pd.DataFrame()

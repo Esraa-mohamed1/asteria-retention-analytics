@@ -56,10 +56,32 @@ class ResilientHttp:
                         return response.json(), response.url
                     except ValueError as exc:
                         raise SourceFetchError(
-                            provider, indicator_id, f"response was not valid JSON: {exc}"
+                            provider,
+                            indicator_id,
+                            f"The server returned a response that is not valid JSON. "
+                            f"This usually means the API is temporarily returning an error page "
+                            f"instead of data. Try again in a few minutes, or use "
+                            f"'--source fixtures' to run offline. (Parse error: {exc})",
                         ) from exc
                 excerpt = response.text[:300].replace("\n", " ")
                 last_reason = f"HTTP {response.status_code}: {excerpt}"
+                if response.status_code == 404:
+                    last_reason = (
+                        "HTTP 404 — the dataset URL was not found. "
+                        "The dataset code in config.py may have changed. "
+                        "Check the provider's documentation to confirm the current code."
+                    )
+                elif response.status_code == 403:
+                    last_reason = (
+                        "HTTP 403 — access denied. The public API may be temporarily "
+                        "geo-restricted or rate-limited. Try again later or use "
+                        "'--source fixtures' for an offline run."
+                    )
+                elif response.status_code not in RETRY_STATUS:
+                    last_reason = (
+                        f"HTTP {response.status_code} — unexpected client error. "
+                        f"Check the request parameters in config.py. Details: {excerpt}"
+                    )
                 if response.status_code not in RETRY_STATUS:
                     raise SourceFetchError(provider, indicator_id, last_reason)
                 retry_after = response.headers.get("Retry-After", "")
@@ -76,5 +98,9 @@ class ResilientHttp:
             if attempt < self._max_retries:
                 self._sleep(min(delay, MAX_SLEEP_SECONDS))
         raise SourceFetchError(
-            provider, indicator_id, f"gave up after {self._max_retries} attempts: {last_reason}"
+            provider,
+            indicator_id,
+            f"Gave up after {self._max_retries} attempts. "
+            f"Check your internet connection, or use '--source fixtures' to run without "
+            f"live data. Last failure: {last_reason}",
         )

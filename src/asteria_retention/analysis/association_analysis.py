@@ -10,7 +10,6 @@ import pandas as pd
 from scipy import stats
 
 from asteria_retention.config import MIN_PAIRS_FOR_CORRELATION
-from asteria_retention.schemas.panel_schema import ASSOCIATION_COLUMNS
 
 
 @dataclass

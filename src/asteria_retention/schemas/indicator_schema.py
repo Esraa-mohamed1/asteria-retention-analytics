@@ -1,6 +1,7 @@
 """External macroeconomic and labour indicator schema definitions."""
 
 from __future__ import annotations
+
 from typing import Final
 
 EXTERNAL_COLUMNS: Final[tuple[str, ...]] = (

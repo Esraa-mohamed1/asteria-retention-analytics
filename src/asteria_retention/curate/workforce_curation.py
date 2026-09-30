@@ -14,10 +14,10 @@ from asteria_retention.config import (
 )
 from asteria_retention.errors import ContractViolation
 from asteria_retention.schemas.event_schema import (
-    REQUIRED_EVENT_COLUMNS,
     BLOCKING_FLAGS,
-    INFORMATIONAL_FLAGS,
     FLAG_DESCRIPTIONS,
+    INFORMATIONAL_FLAGS,
+    REQUIRED_EVENT_COLUMNS,
 )
 
 REQUIRED_COLUMNS = REQUIRED_EVENT_COLUMNS

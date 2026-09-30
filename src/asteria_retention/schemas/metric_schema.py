@@ -1,6 +1,7 @@
 """Metrics and cohort aggregation schema definitions."""
 
 from __future__ import annotations
+
 from typing import Final
 
 METRIC_DIMENSIONS: Final[tuple[str, ...]] = ("country_code", "business_unit")

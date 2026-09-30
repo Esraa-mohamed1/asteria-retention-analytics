@@ -34,6 +34,17 @@
 </header>
 
 <main id="main">
+  <!-- Screen-reader announcement: updated by JS whenever filters change -->
+  <p id="filter-status" role="status" aria-live="polite" class="sr-only"></p>
+
+  <!-- Error state: shown by JS if the embedded data cannot be parsed -->
+  <div id="data-error" hidden aria-live="assertive" role="alert" class="data-error-banner">
+    <strong>Dashboard data could not be loaded.</strong>
+    <span id="data-error-detail"></span>
+    Rebuild it by running <code>run dash</code> (or <code>python -m asteria_retention build-dashboard</code>)
+    and reopen this page.
+  </div>
+
   <div id="notices"></div>
 
   <!-- ── 01 EXPLORE ── -->

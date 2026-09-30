@@ -1,6 +1,7 @@
 """Panel and association statistical results schema definitions."""
 
 from __future__ import annotations
+
 from typing import Final
 
 PANEL_COLUMNS: Final[tuple[str, ...]] = (

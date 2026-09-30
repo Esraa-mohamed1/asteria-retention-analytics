@@ -23,7 +23,6 @@ from asteria_retention.config import (
     CANONICAL_COUNTRIES,
     COUNTRIES,
     INDICATORS,
-    INDICATORS_BY_ID,
     SOURCE_ATTRIBUTION,
     WORKFORCE_AS_OF,
 )
@@ -108,10 +107,6 @@ def build_dashboard_payload(
         external_frame["data_origin"].eq("fixture_synthetic").any()
     )
     failed_indicators = [o for o in ingestion_outcomes if o.get("status") != "ok"]
-    stale_count = 0 if external_frame.empty else int(
-        external_frame.get("obs_status", pd.Series(dtype=str)).eq("").eq(False).sum()
-        if "obs_status" in external_frame else 0
-    )
 
     notices: list[dict[str, str]] = []
     if has_synthetic:

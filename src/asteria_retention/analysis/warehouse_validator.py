@@ -10,10 +10,10 @@ import duckdb
 import pandas as pd
 
 from asteria_retention.analysis.sql_queries import (
+    COUNTRY_SUMMARY_VIEW_SQL,
+    QUARTERLY_HIRE_TREND_VIEW_SQL,
     get_new_hire_retention_sql,
     get_turnover_sql,
-    QUARTERLY_HIRE_TREND_VIEW_SQL,
-    COUNTRY_SUMMARY_VIEW_SQL,
 )
 from asteria_retention.config import COUNTRIES, INDICATORS_BY_ID
 from asteria_retention.errors import ContractViolation

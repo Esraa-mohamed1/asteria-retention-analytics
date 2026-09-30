@@ -19,7 +19,10 @@ from asteria_retention.ingestion.base import (
     RawPayload,
     utc_now_iso,
 )
-from asteria_retention.ingestion.eurostat import EXTERNAL_HISTORY_START_YEAR, PERIOD_PATTERNS
+from asteria_retention.ingestion.eurostat import (
+    EXTERNAL_HISTORY_START_YEAR,
+    PERIOD_PATTERNS,
+)
 from asteria_retention.ingestion.http import ResilientHttp
 
 WORLDBANK_BASE_URL = "https://api.worldbank.org/v2"

@@ -1,6 +1,7 @@
 """Event schemas, required columns, and quality flags for workforce data."""
 
 from __future__ import annotations
+
 from typing import Final
 
 REQUIRED_EVENT_COLUMNS: Final[tuple[str, ...]] = (

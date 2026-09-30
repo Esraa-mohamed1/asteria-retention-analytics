@@ -181,7 +181,10 @@ class EurostatClient:
             else:
                 shown = ", ".join(codes[:8]) + ("..." if len(codes) > 8 else "")
                 raise ContractViolation(
-                    f"{indicator.indicator_id}: dimension '{dim}' has {len(codes)} categories "
-                    f"({shown}). Add it to Indicator.filters or Indicator.prefer in config.py."
+                    f"{indicator.indicator_id}: Eurostat's '{dim}' dimension now has "
+                    f"{len(codes)} categories ({shown}) but only 1 was expected. "
+                    f"The dataset schema likely changed since this pipeline was configured. "
+                    f"Fix: add '{dim}' to Indicator.filters or Indicator.prefer in config.py "
+                    f"to select the correct category. See docs/source_register.md for guidance."
                 )
         return chosen

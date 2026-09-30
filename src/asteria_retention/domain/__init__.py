@@ -1,11 +1,11 @@
 """Domain logic: retention metrics, temporal joins, and validation invariants."""
 
 from asteria_retention.domain.retention_metrics import (
-    load_objectives,
     build_series,
-    summarise,
     exclusion_summary,
+    load_objectives,
     meets_target,
+    summarise,
 )
 from asteria_retention.domain.temporal_alignment import (
     as_of_join,
@@ -13,11 +13,11 @@ from asteria_retention.domain.temporal_alignment import (
 )
 
 __all__ = [
-    "load_objectives",
-    "build_series",
-    "summarise",
-    "exclusion_summary",
-    "meets_target",
     "as_of_join",
     "assert_no_future_information",
+    "build_series",
+    "exclusion_summary",
+    "load_objectives",
+    "meets_target",
+    "summarise",
 ]

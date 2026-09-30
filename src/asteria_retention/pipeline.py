@@ -12,9 +12,7 @@ retrieved_at comes from the payload metadata (not from time.time() at write time
 from __future__ import annotations
 
 import logging
-import sys
 import time
-from pathlib import Path
 
 import pandas as pd
 
@@ -32,11 +30,11 @@ from asteria_retention.config import (
 )
 from asteria_retention.curate import (
     build_external_frame,
-    coverage_report,
-    validate_external_frame,
     canonicalize_events,
+    coverage_report,
     load_events,
     quality_report,
+    validate_external_frame,
     verify_manifest,
 )
 from asteria_retention.domain import (
@@ -45,8 +43,7 @@ from asteria_retention.domain import (
     load_objectives,
     summarise,
 )
-from asteria_retention.errors import AsteriaError, ContractViolation, DataIntegrityError
-from asteria_retention.ingestion.base import ORIGIN_FIXTURE
+from asteria_retention.errors import ContractViolation, DataIntegrityError
 from asteria_retention.ingestion.eurostat import EurostatClient
 from asteria_retention.ingestion.service import IngestionService
 from asteria_retention.ingestion.store import RawStore
@@ -62,7 +59,7 @@ from asteria_retention.reporting.run_report import RunReport
 logger = logging.getLogger(__name__)
 
 
-def _stage_timer() -> "StageTimer":
+def _stage_timer() -> StageTimer:
     return StageTimer()
 
 
@@ -133,7 +130,15 @@ def run(source: str = "auto") -> int:
     if ingest_result.failed:
         stage_status = "degraded"
         exit_code = max(exit_code, 3)
-        logger.warning("%d indicator(s) failed: %s", len(ingest_result.failed), [f.indicator_id for f in ingest_result.failed])
+        failed_ids = [f.indicator_id for f in ingest_result.failed]
+        logger.warning(
+            "%d indicator(s) failed to load live data: %s. "
+            "The pipeline will continue using fixture or cached data for those indicators. "
+            "Results may not reflect the latest published values. "
+            "Try running again, or use '--source fixtures' for a fully offline run.",
+            len(ingest_result.failed),
+            failed_ids,
+        )
     report.record_stage(
         "ingest_external",
         stage_status,
@@ -180,8 +185,23 @@ def run(source: str = "auto") -> int:
         summary = summarise(series, objectives)
         excl = exclusion_summary(events, objectives)
         report.record_stage("compute_metrics", "ok", duration_s=t.elapsed(), rows=len(series))
-    except (ContractViolation, Exception) as exc:
-        logger.critical("Metrics computation failed: %s", exc)
+    except ContractViolation as exc:
+        logger.critical(
+            "Retention metrics failed — a data-contract rule was violated: %s\n"
+            "This usually means the canonical events CSV is missing an expected column "
+            "or has an unexpected shape. Re-run the full pipeline to regenerate it.",
+            exc,
+        )
+        report.record_stage("compute_metrics", "fatal", duration_s=t.elapsed(), detail=str(exc))
+        report.write(DATA_CURATED / "run_report.json", exit_code=1, ingestion_outcomes=ingestion_outcomes, cross_check={})
+        return 1
+    except Exception as exc:
+        logger.critical(
+            "Retention metrics failed unexpectedly: %s\n"
+            "This is likely a bug. Check the stack trace and open a GitHub issue.",
+            exc,
+            exc_info=True,
+        )
         report.record_stage("compute_metrics", "fatal", duration_s=t.elapsed(), detail=str(exc))
         report.write(DATA_CURATED / "run_report.json", exit_code=1, ingestion_outcomes=ingestion_outcomes, cross_check={})
         return 1
@@ -191,13 +211,13 @@ def run(source: str = "auto") -> int:
     panel = pd.DataFrame()
     assoc = pd.DataFrame()
     try:
-        from asteria_retention.analysis import correlate, build_panel, run_sql_analysis
+        from asteria_retention.analysis import build_panel, correlate, run_sql_analysis
 
         panel = build_panel(series, external_frame)
         assoc = correlate(panel)
         report.record_stage("analysis_panel_association", "ok", duration_s=t.elapsed(), rows=len(panel))
     except Exception as exc:
-        logger.error("Panel/association failed: %s", exc, exc_info=True)
+        logger.exception("Panel/association failed")
         exit_code = max(exit_code, 3)
         report.record_stage("analysis_panel_association", "degraded", duration_s=t.elapsed(), detail=str(exc))
 
@@ -227,7 +247,7 @@ def run(source: str = "auto") -> int:
         report.write(DATA_CURATED / "run_report.json", exit_code=1, ingestion_outcomes=ingestion_outcomes, cross_check=cross_check)
         return 1
     except Exception as exc:
-        logger.error("SQL cross-check error: %s", exc, exc_info=True)
+        logger.exception("SQL cross-check error")
         exit_code = max(exit_code, 3)
         report.record_stage("sql_cross_check", "degraded", duration_s=t.elapsed(), detail=str(exc))
 
@@ -277,7 +297,7 @@ def run(source: str = "auto") -> int:
         report.record_stage("build_dashboard", "ok", duration_s=t.elapsed())
         logger.info("Dashboard built")
     except Exception as exc:
-        logger.error("Dashboard build failed: %s", exc, exc_info=True)
+        logger.exception("Dashboard build failed")
         exit_code = max(exit_code, 3)
         report.record_stage("build_dashboard", "degraded", duration_s=t.elapsed(), detail=str(exc))
 

@@ -137,7 +137,7 @@ def _minimal_html(data_json_escaped: str, payload: dict) -> str:  # type: ignore
     for row in payload.get("summary", []):
         if row.get("country_code") == "ALL" and row.get("business_unit") == "ALL":
             val = row.get("value")
-            val_str = "{:.1%}".format(val) if val is not None else "N/A"
+            val_str = f"{val:.1%}" if val is not None else "N/A"
             target = row.get("target_value", "")
             status = row.get("status_text", "")
             summary_rows += (

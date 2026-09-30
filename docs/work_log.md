@@ -20,6 +20,7 @@ real run on the official files (`python -m asteria_retention.cli --use-fixtures`
 | 13 | Built the accessible HTML dashboard | Required deliverable | Filters, KPIs, quality table, source notes, empty states |
 | 14 | Verified dashboard findings against real numbers | Avoid claiming things the data does not show | All findings match `data.json` |
 | 15 | Wrote README, AI_USAGE, source register, architecture doc | Required deliverables | See `docs/` |
+| 16 | Hardening pass: accessibility, CI, error UX, linting | Code quality and submission polish | aria-live filter announcements; try/catch dashboard data parse; `ci.yml` workflow; `coke` CLI runner support; `ruff` added to dev deps and zero errors; bare `except (ContractViolation, Exception)` split into two typed handlers; all SourceFetchError messages follow WHAT+WHY+NEXT; `docs/error_messages.md` created; `stale_count` unused variable removed |
 
 ## Bugs found and fixed along the way (real ones)
 

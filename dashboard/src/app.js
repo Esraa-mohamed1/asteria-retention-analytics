@@ -2,7 +2,32 @@
   "use strict";
 
   // ── load embedded data ──────────────────────────────────────────────────────
-  var D = JSON.parse(document.getElementById("asteria-data").textContent);
+  // Wrapped in try/catch: if the data element is missing or contains malformed
+  // JSON (e.g. a corrupted build), we show a readable on-page error instead of
+  // a blank screen. Never let the page go silent on the user.
+  var D;
+  try {
+    var dataEl = document.getElementById("asteria-data");
+    if (!dataEl) throw new Error("The embedded data element (#asteria-data) is missing from the page.");
+    D = JSON.parse(dataEl.textContent);
+    if (!D || typeof D !== "object") throw new Error("Embedded data parsed but is not a valid object.");
+  } catch (err) {
+    var errBanner = document.getElementById("data-error");
+    var errDetail = document.getElementById("data-error-detail");
+    if (errBanner) {
+      errBanner.hidden = false;
+      if (errDetail) errDetail.textContent = " (" + err.message + ") ";
+    } else {
+      // Absolute last resort: inject a visible message into the body
+      document.body.innerHTML =
+        '<div style="font-family:sans-serif;color:#ff6b5b;padding:2rem;max-width:600px;margin:3rem auto">' +
+        '<h1>Dashboard data could not be loaded</h1>' +
+        '<p>' + String(err.message) + '</p>' +
+        '<p>Rebuild by running <code>coke dash</code> and reopen this page.</p></div>';
+    }
+    return; // stop all further JS execution — page stays in error state
+  }
+
   var meta        = D.meta         || {};
   var summary     = D.summary      || [];
   var series      = (D.series      || {}).rows || [];
@@ -140,6 +165,9 @@
 
     renderBreakdownRows(el("tbody-country"), countryRows, "country_code");
     renderBreakdownRows(el("tbody-bu"),      buRows,      "business_unit");
+
+    // Update aria-live region so screen-reader users hear what changed
+    announceFilterState(countryRows.length + buRows.length);
   }
 
   function renderBreakdownRows(tbody, rows, groupKey) {
@@ -178,6 +206,19 @@
         "<td>" + badge + "</td>";
       tbody.appendChild(tr);
     });
+  }
+
+  // Announce filter state to screen readers via aria-live region.
+  // Called after every filter change so assistive tech users know what changed.
+  function announceFilterState(rowCount) {
+    var statusEl = document.getElementById("filter-status");
+    if (!statusEl) return;
+    var obj     = selObj.value     === "ALL" ? "all objectives"     : selObj.options[selObj.selectedIndex].text;
+    var country = selCountry.value === "ALL" ? "all countries"      : selCountry.options[selCountry.selectedIndex].text;
+    var bu      = selBU.value      === "ALL" ? "all business units" : selBU.value;
+    statusEl.textContent = rowCount > 0
+      ? "Showing " + rowCount + " row" + (rowCount === 1 ? "" : "s") + " for " + obj + ", " + country + ", " + bu + "."
+      : "No data matches this filter combination.";
   }
 
   [selObj, selCountry, selBU, selPFrom, selPTo].forEach(function (inp) {

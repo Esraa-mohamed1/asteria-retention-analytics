@@ -1,7 +1,7 @@
 {
-  "run_timestamp": "2026-09-30T06:21:57Z",
+  "run_timestamp": "2026-09-30T07:41:11Z",
   "source_mode": "fixtures",
-  "total_duration_s": 2.19,
+  "total_duration_s": 2.23,
   "exit_code": 0,
   "stages": [
     {
@@ -14,14 +14,14 @@
     {
       "stage": "ingest_external",
       "status": "ok",
-      "duration_s": 0.013,
+      "duration_s": 0.017,
       "rows": 1228,
       "detail": "source=fixtures, failed=[]"
     },
     {
       "stage": "curate_external",
       "status": "ok",
-      "duration_s": 0.094,
+      "duration_s": 0.083,
       "rows": 1228,
       "detail": ""
     },
@@ -35,35 +35,35 @@
     {
       "stage": "compute_metrics",
       "status": "ok",
-      "duration_s": 0.222,
+      "duration_s": 0.198,
       "rows": 1710,
       "detail": ""
     },
     {
       "stage": "analysis_panel_association",
       "status": "ok",
-      "duration_s": 1.341,
+      "duration_s": 1.378,
       "rows": 687,
       "detail": ""
     },
     {
       "stage": "sql_cross_check",
       "status": "ok",
-      "duration_s": 0.302,
+      "duration_s": 0.308,
       "rows": null,
       "detail": "{'NEW_HIRE_6M': 'PASS', 'SENIOR_HIRE_12M': 'PASS', 'REGRETTED_TURNOVER_12M': 'PASS'}"
     },
     {
       "stage": "write_curated_csvs",
       "status": "ok",
-      "duration_s": 0.045,
+      "duration_s": 0.069,
       "rows": null,
       "detail": ""
     },
     {
       "stage": "build_dashboard",
       "status": "ok",
-      "duration_s": 0.131,
+      "duration_s": 0.138,
       "rows": null,
       "detail": ""
     }

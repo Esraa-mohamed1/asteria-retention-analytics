@@ -1,39 +1,33 @@
 """Integration and domain unit tests for the retention analytics pipeline."""
 
-from pathlib import Path
-import numpy as np
 import pandas as pd
 import pytest
 
-from asteria_retention.config import (
-    INDICATORS_BY_ID,
-    COUNTRIES,
-    DATA_RAW,
-    DATA_CURATED,
-    EVENTS_CSV,
-    OBJECTIVES_CSV,
-    MANIFEST_JSON,
-    WORKFORCE_AS_OF,
-)
-from asteria_retention.curate import (
-    verify_manifest,
-    load_events,
-    canonicalize_events,
-    quality_report,
-)
-from asteria_retention.domain import (
-    load_objectives,
-    build_series,
-    summarise,
-    as_of_join,
-    assert_no_future_information,
-)
 from asteria_retention.analysis import (
     build_panel,
     correlate,
     run_sql_analysis,
 )
-from asteria_retention.errors import ContractViolation
+from asteria_retention.config import (
+    DATA_CURATED,
+    DATA_RAW,
+    EVENTS_CSV,
+    MANIFEST_JSON,
+    OBJECTIVES_CSV,
+    WORKFORCE_AS_OF,
+)
+from asteria_retention.curate import (
+    canonicalize_events,
+    load_events,
+    quality_report,
+    verify_manifest,
+)
+from asteria_retention.domain import (
+    assert_no_future_information,
+    build_series,
+    load_objectives,
+    summarise,
+)
 
 
 @pytest.fixture(scope="session")

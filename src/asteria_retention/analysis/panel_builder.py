@@ -4,7 +4,10 @@ from __future__ import annotations
 
 import pandas as pd
 
-from asteria_retention.domain.temporal_alignment import as_of_join, assert_no_future_information
+from asteria_retention.domain.temporal_alignment import (
+    as_of_join,
+    assert_no_future_information,
+)
 from asteria_retention.schemas.panel_schema import PANEL_COLUMNS
 
 NEW_HIRE_OBJECTIVE = "NEW_HIRE_6M"
