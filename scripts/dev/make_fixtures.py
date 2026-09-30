@@ -92,11 +92,8 @@ def make_eurostat_monthly(
     preferred: dict[str, str] | None = None,
     provisional_indices: set[int] | None = None,
 ) -> dict:
-    """Build a Eurostat JSON-stat 2.0 response.
+    """Build a Eurostat JSON-stat 2.0 response."""
 
-    extra_dims: additional dimensions beyond geo/time. Each maps dim_name -> list of category codes.
-    preferred: the single category from each extra_dim that contains real values (others get None).
-    """
     if extra_dims is None:
         extra_dims = {}
     if preferred is None:
@@ -257,12 +254,10 @@ def main() -> None:
     print("Generating Eurostat fixtures...")
 
     # -- unemployment_rate (une_rt_m): simple 3 filter dims already fixed by filters ---
-    # The API returns already-filtered for s_adj=SA, age=TOTAL, sex=T, unit=PC_ACT
-    # So the JSON-stat will have single-valued dims for those (already filtered server-side)
+    # JSON-stat will have single-valued dims for those (already filtered server-side)
     ue_body = make_eurostat_monthly(
         "une_rt_m", GEO_CODES, monthly_periods,
         value_range=(2.5, 18.0),
-        # Simulate server-side filtering: no extra dims returned
     )
     save_fixture(FIXTURES_DIR / "eurostat" / "unemployment_rate", "eurostat", "unemployment_rate", ue_body)
 
@@ -276,9 +271,9 @@ def main() -> None:
 
     # -- job_vacancy_rate (jvs_q_nace2): multi-category dims to exercise `prefer` ---
     # indic_em already in filters -> JOBRATE only (server-side)
-    # s_adj: NSA, SA  (prefer NSA)
-    # nace_r2: B-S, A-S  (prefer B-S)
-    # sizeclas: TOTAL, GE10  (prefer TOTAL)
+    # s_adj: NSA, SA
+    # nace_r2: B-S, A-S
+    # sizeclas: TOTAL, GE10
     jvs_body = make_eurostat_monthly(
         "jvs_q_nace2", GEO_CODES, quarterly_periods,
         value_range=(0.5, 5.0),

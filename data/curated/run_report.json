@@ -1,7 +1,7 @@
 {
-  "run_timestamp": "2026-09-29T12:15:21Z",
+  "run_timestamp": "2026-09-30T06:21:57Z",
   "source_mode": "fixtures",
-  "total_duration_s": 2.25,
+  "total_duration_s": 2.19,
   "exit_code": 0,
   "stages": [
     {
@@ -14,56 +14,56 @@
     {
       "stage": "ingest_external",
       "status": "ok",
-      "duration_s": 0.016,
+      "duration_s": 0.013,
       "rows": 1228,
       "detail": "source=fixtures, failed=[]"
     },
     {
       "stage": "curate_external",
       "status": "ok",
-      "duration_s": 0.087,
+      "duration_s": 0.094,
       "rows": 1228,
       "detail": ""
     },
     {
       "stage": "curate_workforce",
       "status": "ok",
-      "duration_s": 0.039,
+      "duration_s": 0.038,
       "rows": 2407,
       "detail": ""
     },
     {
       "stage": "compute_metrics",
       "status": "ok",
-      "duration_s": 0.2,
+      "duration_s": 0.222,
       "rows": 1710,
       "detail": ""
     },
     {
       "stage": "analysis_panel_association",
       "status": "ok",
-      "duration_s": 1.401,
+      "duration_s": 1.341,
       "rows": 687,
       "detail": ""
     },
     {
       "stage": "sql_cross_check",
       "status": "ok",
-      "duration_s": 0.309,
+      "duration_s": 0.302,
       "rows": null,
       "detail": "{'NEW_HIRE_6M': 'PASS', 'SENIOR_HIRE_12M': 'PASS', 'REGRETTED_TURNOVER_12M': 'PASS'}"
     },
     {
       "stage": "write_curated_csvs",
       "status": "ok",
-      "duration_s": 0.061,
+      "duration_s": 0.045,
       "rows": null,
       "detail": ""
     },
     {
       "stage": "build_dashboard",
       "status": "ok",
-      "duration_s": 0.137,
+      "duration_s": 0.131,
       "rows": null,
       "detail": ""
     }
@@ -76,7 +76,7 @@
       "origin": "fixture_synthetic",
       "n_observations": 498,
       "retrieved_at": "2026-01-15T08:00:00Z",
-      "snapshot_age_days": 257,
+      "snapshot_age_days": 258,
       "error": "",
       "note": ""
     },
@@ -87,7 +87,7 @@
       "origin": "fixture_synthetic",
       "n_observations": 162,
       "retrieved_at": "2026-01-15T08:00:00Z",
-      "snapshot_age_days": 257,
+      "snapshot_age_days": 258,
       "error": "",
       "note": ""
     },
@@ -98,7 +98,7 @@
       "origin": "fixture_synthetic",
       "n_observations": 498,
       "retrieved_at": "2026-01-15T08:00:00Z",
-      "snapshot_age_days": 257,
+      "snapshot_age_days": 258,
       "error": "",
       "note": ""
     },
@@ -109,7 +109,7 @@
       "origin": "fixture_synthetic",
       "n_observations": 34,
       "retrieved_at": "2026-01-15T08:00:00Z",
-      "snapshot_age_days": 257,
+      "snapshot_age_days": 258,
       "error": "",
       "note": ""
     },
@@ -120,7 +120,7 @@
       "origin": "fixture_synthetic",
       "n_observations": 36,
       "retrieved_at": "2026-01-15T08:00:00Z",
-      "snapshot_age_days": 257,
+      "snapshot_age_days": 258,
       "error": "",
       "note": ""
     }

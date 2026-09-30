@@ -121,6 +121,27 @@ pip install -e ".[dev]"    # Python 3.11+
 After `coke`, open `dashboard/index.html` in any browser.
 No local server required — data is embedded in the HTML.
 
+> [!NOTE]
+> **PowerShell & Execution Policy Notes:**
+> - In PowerShell, scripts require a leading `.\` prefix: e.g. `.\coke.ps1` or `.\coke.ps1 install` (typing just `coke` is only supported in Command Prompt / cmd.exe).
+> - If Windows PowerShell blocks script execution (`ExecutionPolicy`), run with bypass:
+>   ```powershell
+>   powershell -ExecutionPolicy Bypass -File ".\coke.ps1"
+>   powershell -ExecutionPolicy Bypass -File ".\coke.ps1" install
+>   powershell -ExecutionPolicy Bypass -File ".\coke.ps1" test
+>   ```
+>   Or set the policy once for your user account:
+>   ```powershell
+>   Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+>   ```
+> - **In Windows Command Prompt (`cmd.exe`)**: simply run `coke` or `coke install` directly without execution policy restrictions.
+> - **Direct Python commands (works on any OS / shell)**:
+>   - Install: `python -m pip install -e ".[dev]"`
+>   - Run pipeline (fixtures): `python -m asteria_retention run --source fixtures`
+>   - Run tests: `python -m pytest tests/ -v`
+>   - Rebuild dashboard: `python -m asteria_retention build-dashboard`
+
+
 
 ---
 
