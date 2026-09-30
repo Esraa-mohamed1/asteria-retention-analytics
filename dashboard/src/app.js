@@ -85,14 +85,16 @@
 
   // ── 01 stat cards ────────────────────────────────────────────────────────────
   var allRows = summary.filter(function (r) { return r.country_code === "ALL" && r.business_unit === "ALL"; });
+  var statCardEls = [];
 
   allRows.forEach(function (row) {
     var obj  = objMap[row.objective_id];
     var hit  = meetsTarget(row.value, obj);
     var card = document.createElement("div");
-    card.className = "stat-card" + (hit === false ? " miss" : "");
-    card.setAttribute("role","region");
-    card.setAttribute("aria-label", esc(obj ? obj.name : row.objective_id));
+    card.className = "stat-card interactive" + (hit === false ? " miss" : "");
+    card.setAttribute("role","button");
+    card.setAttribute("tabindex","0");
+    card.setAttribute("aria-label", "Filter by " + esc(obj ? obj.name : row.objective_id));
 
     var pct   = row.value !== null ? (row.value * 100).toFixed(1) + "%" : "N/A";
     var tgt   = obj ? (obj.direction === "at_least" ? "≥ " : "≤ ") + (obj.target_value * 100).toFixed(0) + "%" : "";
@@ -101,12 +103,36 @@
     var n     = row.denominator !== null && row.denominator !== undefined ? "n = " + Math.round(row.denominator) : "";
 
     card.innerHTML =
-      "<span class='stat-badge " + cls + "'>" + badge + "</span>" +
-      "<div class='stat-label'>" + esc(obj ? obj.name : row.objective_id) + "</div>" +
+      "<div class='stat-card-header'>" +
+        "<div class='stat-label'>" + esc(obj ? obj.name : row.objective_id) + "</div>" +
+        "<span class='stat-badge " + cls + "'>" + badge + "</span>" +
+      "</div>" +
       "<div class='stat-value " + cls + "'>" + pct + "</div>" +
       "<div class='stat-sub'>Target " + tgt + " &nbsp;·&nbsp; " + n + "</div>";
+
+    card.addEventListener("click", function () {
+      var targetVal = (selObj.value === row.objective_id) ? "ALL" : row.objective_id;
+      selObj.value = targetVal;
+      buildBreakdown();
+      updateCardSelection();
+    });
+
+    card.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        card.click();
+      }
+    });
+
+    statCardEls.push({ el: card, id: row.objective_id });
     el("stat-cards").appendChild(card);
   });
+
+  function updateCardSelection() {
+    statCardEls.forEach(function (item) {
+      item.el.classList.toggle("selected", selObj.value === item.id);
+    });
+  }
 
   // ── 01 filters ───────────────────────────────────────────────────────────────
   var selObj     = el("sel-objective");
@@ -165,6 +191,7 @@
 
     renderBreakdownRows(el("tbody-country"), countryRows, "country_code");
     renderBreakdownRows(el("tbody-bu"),      buRows,      "business_unit");
+    updateCardSelection();
 
     // Update aria-live region so screen-reader users hear what changed
     announceFilterState(countryRows.length + buRows.length);
@@ -494,21 +521,22 @@
       });
     }
 
-    // Finding 2: country variability
-    var cRows = summary.filter(function (r) { return r.country_code !== "ALL" && r.business_unit === "ALL" && r.value !== null; });
-    if (cRows.length) {
-      var vals  = cRows.map(function (r) { return r.value; });
+    // Finding 2: country consistency on new-hire retention
+    var nhRows = summary.filter(function (r) { return r.objective_id === "NEW_HIRE_6M" && r.country_code !== "ALL" && r.business_unit === "ALL" && r.value !== null; });
+    if (nhRows.length) {
+      var vals  = nhRows.map(function (r) { return r.value; });
       var vMin  = Math.min.apply(null, vals);
       var vMax  = Math.max.apply(null, vals);
-      var rMin  = cRows.find(function (r) { return r.value === vMin; });
-      var rMax  = cRows.find(function (r) { return r.value === vMax; });
+      var rMin  = nhRows.find(function (r) { return r.value === vMin; });
+      var rMax  = nhRows.find(function (r) { return r.value === vMax; });
+      var spread = (vMax - vMin) * 100;
       findings.push({
         type: "info",
-        title: "Country spread: " + (vMin*100).toFixed(1) + "% – " + (vMax*100).toFixed(1) + "%",
-        body: (rMax ? rMax.country_code : "?") + " posts the highest rate (" + (vMax*100).toFixed(1) + "%) while " +
-              (rMin ? rMin.country_code : "?") + " is lowest (" + (vMin*100).toFixed(1) + "%). " +
-              "A " + ((vMax-vMin)*100).toFixed(1) + " pp gap suggests country-specific factors dominate.",
-        caveat: "Summary rows pool all objectives. Breakdown by single objective for a cleaner comparison."
+        title: "New-hire retention country consistency: " + spread.toFixed(1) + " pp spread (" + (vMin*100).toFixed(1) + "% – " + (vMax*100).toFixed(1) + "%)",
+        body: "Tight clustering across all 6 markets: " + (rMax ? rMax.country_code : "?") + " highest (" + (vMax*100).toFixed(1) + "%), " +
+              (rMin ? rMin.country_code : "?") + " lowest (" + (vMin*100).toFixed(1) + "%). " +
+              "A narrow " + spread.toFixed(1) + " pp spread indicates new-hire onboarding is structurally solid across operating markets.",
+        caveat: "Evaluates mature 6-month cohorts across the 6 European operating countries."
       });
     }
 

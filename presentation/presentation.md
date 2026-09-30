@@ -133,7 +133,7 @@ way.
 |---|---|---|---|
 | New-hire six-month retention | **87.1%** (n = 1,808) | ≥ 86% | ✅ On target |
 | Senior-hire twelve-month retention | **78.0%** (n = 259) | ≥ 90% | ❌ Off target |
-| Trailing regretted turnover (12 mo) | **5.1%** (n = 1,570) | ≤ 8% | ✅ On target |
+| Trailing regretted turnover (12 mo) | **5.1%** (n = 1,570) | ≤ 7.5% | ✅ On target |
 
 48 Senior Leaders (2025 hires) are still within their window and excluded as immature.
 
@@ -149,16 +149,16 @@ way.
 Exits are evenly spread across all four hire cohorts 2021–2024 (17/15/13/12).  
 Bulgaria is worst (72.0%), Italy best (82.9%). **All six countries miss.**
 
-**Finding 2 — Country spread on new-hire retention: 20 pp range**
+**Finding 2 — New-hire retention is remarkably consistent across countries (tight 3.7 pp spread)**
 
-Romania lowest (80.0%), Greece/Poland comfortably above target.  
-The 20 pp gap suggests country-specific factors (local labour market, onboarding process)
-outweigh company-wide policy effects.
+All 6 countries cluster tightly between **85.1% (Romania)** and **88.8% (Poland)**.  
+5 of 6 markets exceed the ≥ 86% target (Poland 88.8%, Greece 88.3%, Ireland 87.3%, Bulgaria 86.9%, Italy 86.4%), with Romania just 0.9 pp below (85.1%).  
+This narrow 3.7 pp range demonstrates that new-hire onboarding is structurally solid and reproducible across European operations.
 
-**Finding 3 — Regretted turnover is well-controlled (5.1% vs ≤ 8% target)**
+**Finding 3 — Regretted turnover is well-controlled (5.1% vs ≤ 7.5% target)**
 
-Consistent across countries. Finance BU is lowest (3.8%); Supply Chain highest (6.9%).
-No country is at risk of breaching the ceiling.
+Consistent across countries. Supply Chain BU is lowest (4.4%); Finance is highest (6.4%).  
+All business units and countries are comfortably below the 7.5% ceiling.
 
 ---
 

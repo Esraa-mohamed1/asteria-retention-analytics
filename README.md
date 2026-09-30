@@ -182,7 +182,7 @@ with only trivial `CURRENT_DATE` → `'2025-12-31'::DATE` syntax changes.
 |---|---|---|---|
 | New-hire six-month retention | **87.1%** (n = 1,808 mature) | ≥ 86% | ✅ On target |
 | Senior-hire twelve-month retention | **78.0%** (n = 259 mature) | ≥ 90% | ❌ **Off target** |
-| Trailing regretted turnover (12 mo) | **5.1%** (n = 1,570) | ≤ 8% | ✅ On target |
+| Trailing regretted turnover (12 mo) | **5.1%** (n = 1,570) | ≤ 7.5% | ✅ On target |
 
 **Why SENIOR_HIRE_12M misses by 12 pp:**  
 57 of 259 mature Senior Leaders left within 12 months (median exit: 3.8 months
@@ -191,9 +191,11 @@ from 2021–2024 contributes similarly (17 / 15 / 13 / 12 exits). Bulgaria is
 worst (72.0%), Italy best (82.9%). This is not a one-off quarter.
 
 **Country spread:**  
-All countries meet the new-hire and turnover targets. Romania is closest to
-the edge on new-hire (80.0%). The 12–22 pp senior-hire gap is consistent
-across all six markets.
+New-hire retention is tightly clustered across all 6 markets within a narrow 3.7 pp
+band (Poland 88.8% to Romania 85.1%). 5 of 6 countries exceed the ≥86% target,
+with Romania missing by only 0.9 pp. Regretted turnover is comfortably below the
+7.5% ceiling everywhere. In contrast, the senior-hire shortfall is structural
+across all six countries.
 
 **Explicit non-finding:**  
 Association analysis between senior-hire retention and external indicators was
